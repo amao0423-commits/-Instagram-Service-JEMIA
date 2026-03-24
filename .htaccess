@@ -1,0 +1,13 @@
+# Apache 用（本番が Apache の場合に配置）
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # 必要に応じて HTTPS へリダイレクト（ドメインに合わせてコメント解除）
+  # RewriteCond %{HTTPS} !=on
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ディレクトリ一覧の無効化
+Options -Indexes
+
+# PHP の表示・ログはサーバーの php.ini またはパネルで設定してください。
+# PHP-FPM では php_flag が使えない場合があります。

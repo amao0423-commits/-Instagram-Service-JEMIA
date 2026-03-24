@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagramおすすめタブ人気投稿に載る方法｜最新アルゴリズム解説｜JEMIA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', '"Hiragino Kaku Gothic ProN"', 'Meiryo', 'sans-serif']
+          },
+          colors: {
+            cream: '#fffbf0',
+            primary: { 50: '#f0f4f8', 100: '#d9e2ec', 200: '#bcccdc', 600: '#486581', 700: '#334e68', 800: '#243b53', 900: '#102a43' },
+            body: '#1a1a1a'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans JP', sans-serif; background-color: #fffbf0; }
+    /* 背景装飾：丸形のみ（絵文字なし） */
+    .guide-bg-deco { position: absolute; pointer-events: none; overflow: hidden; inset: 0; }
+    .guide-blob { position: absolute; border-radius: 50%; opacity: 0.08; }
+    .guide-blob.b1 { width: 200px; height: 200px; background: #ffb6c1; top: -50px; right: -30px; }
+    .guide-blob.b2 { width: 160px; height: 160px; background: #90caf9; bottom: 10%; left: -40px; }
+    .guide-blob.b3 { width: 120px; height: 120px; background: #fff59d; top: 35%; right: 15%; }
+    /* かわいいナビボタン：ホバーでポヨッと弾む */
+    .guide-nav-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.25rem; border-radius: 9999px;
+      font-weight: 700; font-size: 0.9375rem;
+      background: #fff; border: 2px solid #f0e6d2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: box-shadow 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+      text-decoration: none; color: #1e293b;
+    }
+    .guide-nav-btn:hover {
+      animation: guidePoyo 0.4s ease-out forwards;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    @keyframes guidePoyo {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.12); }
+      60% { transform: scale(0.96); }
+      85% { transform: scale(1.04); }
+      100% { transform: scale(1.05); }
+    }
+    .guide-nav-btn.guide-nav-1:hover { background: #ffebee; border-color: #f8bbd9; }
+    .guide-nav-btn.guide-nav-2:hover { background: #e3f2fd; border-color: #90caf9; }
+    .guide-nav-btn.guide-nav-3:hover { background: #f0fdf4; border-color: #86efac; }
+    /* アカウント最適化タブ：タイムライン */
+    .opt-timeline { position: relative; padding-left: 0; }
+    .opt-timeline::before {
+      content: ''; position: absolute; left: 1rem; top: 0.5rem; bottom: 0.5rem; width: 2px;
+      background: linear-gradient(180deg, rgba(0,34,85,0.25), rgba(255,102,51,0.35));
+      border-radius: 9999px;
+    }
+    .opt-tl-item { position: relative; padding-left: 3.25rem; padding-bottom: 2.5rem; }
+    .opt-tl-item:last-child { padding-bottom: 0; }
+    .opt-tl-dot {
+      position: absolute; left: 0.375rem; top: 0.35rem; width: 1.375rem; height: 1.375rem;
+      border-radius: 50%; background: #fff; border: 3px solid #002255; box-shadow: 0 0 0 4px rgba(0,34,85,0.08);
+    }
+    .opt-tag-algo {
+      display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase; color: #FF6633; background: rgba(255,102,51,0.12);
+      padding: 0.2rem 0.5rem; border-radius: 9999px; border: 1px solid rgba(255,102,51,0.25);
+    }
+    .opt-pie-legend span { display: inline-block; width: 0.65rem; height: 0.65rem; border-radius: 2px; margin-right: 0.35rem; vertical-align: middle; }
+    .opt-check-row { display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.65rem 0.85rem; border-radius: 0.5rem; border: 1px solid rgba(0,34,85,0.1); background: #fff; }
+    .opt-check-row input { accent-color: #002255; width: 1.1rem; height: 1.1rem; margin-top: 0.15rem; flex-shrink: 0; }
+    .opt-legal-box { background: #f4f1eb; border: 1px solid rgba(0,0,0,0.06); }
+    .guide-section { position: relative; }
+    [data-inquiry] { cursor: pointer; }
+    /* メイン記事：抜け感・マガジン */
+    .guide-article { background: #fff; border-radius: 1rem; border: 1px solid rgba(0,34,85,0.06); box-shadow: 0 8px 32px rgba(0,34,85,0.07); }
+    .guide-section-accent { width: 4px; min-height: 2.5rem; border-radius: 9999px; background: #FF6633; flex-shrink: 0; }
+    .guide-lead { font-size: clamp(1.125rem, 2.5vw, 1.35rem); font-weight: 700; color: #002255; letter-spacing: -0.02em; line-height: 1.5; }
+    .guide-merit-card {
+      position: relative; background: #fff; border-radius: 0.5rem; box-shadow: 0 4px 20px rgba(0,34,85,0.08);
+      border: 1px solid rgba(0,34,85,0.06); padding: 2rem 1.75rem 1.75rem; min-height: 100%;
+    }
+    .guide-merit-num {
+      position: absolute; top: 1rem; left: 1.25rem; font-size: 2.75rem; font-weight: 700; line-height: 1;
+      color: rgba(0,34,85,0.08); letter-spacing: -0.05em; user-select: none;
+    }
+    .guide-badge-priority { border: 2px solid #FF6633; }
+    .btn-cta-shimmer { position: relative; overflow: hidden; }
+    .btn-cta-shimmer::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      animation: shimmerLoop 2.5s ease-in-out infinite;
+    }
+    @keyframes shimmerLoop { 0% { left: -100%; } 60%, 100% { left: 150%; } }
+  </style>
+</head>
+<body id="top" class="min-h-screen text-[#1e293b] antialiased">
+  <!-- 背景装飾 -->
+  <div class="guide-bg-deco" aria-hidden="true">
+    <div class="guide-blob b1"></div>
+    <div class="guide-blob b2"></div>
+    <div class="guide-blob b3"></div>
+  </div>
+
+  <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <!-- パンくず -->
+    <nav class="mb-8 text-sm" aria-label="パンくず">
+      <ol class="flex flex-wrap items-center gap-1.5 text-slate-600">
+        <li><a href="index.html" class="hover:text-[#002255] underline underline-offset-2 transition">トップ</a></li>
+        <li class="flex items-center gap-1.5" aria-hidden="true"><span>&gt;</span></li>
+        <li class="text-[#002255] font-medium" aria-current="page">インスタ戦略ガイド</li>
+      </ol>
+    </nav>
+    <!-- ヘッダー -->
+    <header class="mb-10 sm:mb-12">
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-[#002255] leading-snug">Instagramおすすめタブ人気投稿に載る方法｜最新アルゴリズム解説</h1>
+      <p class="mt-4 text-slate-600 text-base leading-relaxed">おすすめ表示・アルゴリズムのヒントをまとめました</p>
+    </header>
+
+    <!-- インスタ戦略ガイド ナビ（3タブ・等間隔） -->
+    <nav class="guide-section mb-12 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-3 w-full" aria-label="インスタ戦略ガイドメニュー">
+      <a href="#section-account-optimize" class="guide-nav-btn guide-nav-3 justify-center text-center sm:text-left"><i data-lucide="sparkles" class="w-[1.1rem] h-[1.1rem] text-[#002255] shrink-0" aria-hidden="true"></i><span>アカウント最適化について</span></a>
+      <a href="#section-recommend" class="guide-nav-btn guide-nav-1 justify-center text-center sm:text-left"><i data-lucide="rocket" class="w-[1.1rem] h-[1.1rem] text-[#002255] shrink-0" aria-hidden="true"></i><span>おすすめタブ上位表示方法</span></a>
+      <a href="#section-diagnosis" class="guide-nav-btn guide-nav-2 justify-center text-center sm:text-left"><i data-lucide="clipboard-list" class="w-[1.1rem] h-[1.1rem] text-[#002255] shrink-0" aria-hidden="true"></i><span>無料キーワード診断</span></a>
+    </nav>
+
+    <!-- アカウント最適化について -->
+    <section id="section-account-optimize" class="guide-section mb-12 sm:mb-16 scroll-mt-8" aria-labelledby="account-opt-heading">
+      <article class="guide-article p-8 sm:p-10 lg:p-12 overflow-hidden">
+        <!-- イントロ -->
+        <header class="mb-10 sm:mb-12">
+          <div class="relative rounded-xl overflow-hidden border border-slate-200/80 bg-gradient-to-br from-slate-50 to-[#f8f6f1] mb-8">
+            <img src="image_d7c986.jpg" alt="" class="w-full h-48 sm:h-56 object-cover opacity-90" width="1200" height="400" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="hidden absolute inset-0 bg-gradient-to-br from-[#e8eef5] via-[#f5f2ec] to-[#eef2f7]" aria-hidden="true"></div>
+            <div class="relative p-6 sm:p-8 lg:p-10">
+              <h2 id="account-opt-heading" class="text-xl sm:text-2xl lg:text-[1.65rem] font-bold text-[#002255] tracking-tight leading-snug" style="font-family:'Noto Sans JP',sans-serif">Instagram最適化は『継続力』でつくられる</h2>
+              <p class="mt-4 text-sm sm:text-base text-slate-700 leading-[1.85] max-w-3xl font-medium" style="font-family:'Noto Sans JP',sans-serif">
+                短期のテクニックよりも、一貫した発信とターゲットとの対話がアルゴリズム上の信頼につながります。ここでは、最適化アカウントの考え方と、日々の運用に落とし込むための実践ステップを整理しました。
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- セクション1：最適化アカウントとは -->
+        <div class="mb-12 sm:mb-14">
+          <div class="flex gap-4 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-lg sm:text-xl font-bold text-[#002255] leading-snug pt-0.5 flex items-center gap-2">
+              <i data-lucide="scan-search" class="w-6 h-6 text-[#002255] shrink-0" aria-hidden="true"></i>
+              <span>最適化アカウントとは？</span>
+            </h3>
+          </div>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-8 max-w-3xl">
+            アカウントの状態は、コンテンツの質・行動の一貫性・エンゲージメントのバランスで大まかに次のように分類できます。
+          </p>
+          <div class="grid sm:grid-cols-3 gap-4 sm:gap-5">
+            <article class="relative rounded-xl border border-[#002255]/15 bg-white p-5 sm:p-6 shadow-sm flex flex-col">
+              <span class="opt-tag-algo mb-3"><i data-lucide="sparkles" class="w-3 h-3" aria-hidden="true"></i> アルゴリズム優遇</span>
+              <h4 class="font-bold text-[#002255] text-base mb-2">最適化</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed flex-1">プロフィール・投稿・行動が揃い、ニッチとターゲットが明確。初動の反応が安定しやすい状態です。</p>
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-slate-50/80 p-5 sm:p-6 shadow-sm flex flex-col">
+              <h4 class="font-bold text-[#002255] text-base mb-2">準最適化</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed flex-1">一部は整っているが、ハッシュタグや交流のリズムにばらつきがある段階。改善の余地が最も見えやすい状態です。</p>
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm flex flex-col">
+              <h4 class="font-bold text-slate-700 text-base mb-2">非最適化</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed flex-1">情報が散らばっている、または投稿が止まりがちでシグナルが弱い状態。土台から見直すタイミングです。</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- セクション2：5ステップ -->
+        <div class="mb-12 sm:mb-14">
+          <div class="flex gap-4 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-lg sm:text-xl font-bold text-[#002255] leading-snug pt-0.5 flex items-center gap-2">
+              <i data-lucide="line-chart" class="w-6 h-6 text-[#002255] shrink-0" aria-hidden="true"></i>
+              <span>5つの実践ステップ</span>
+            </h3>
+          </div>
+          <div class="opt-timeline max-w-3xl">
+            <div class="opt-tl-item">
+              <span class="opt-tl-dot" aria-hidden="true"></span>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#FF6633] mb-1">Step 01</p>
+              <h4 class="font-bold text-[#002255] mb-2">軸とプロフィールの設計</h4>
+              <p class="text-sm text-slate-600 leading-relaxed">誰に何を届けるアカウントかを一文で言語化し、名前・紹介文・ハイライトをその軸に揃えます。</p>
+            </div>
+            <div class="opt-tl-item">
+              <span class="opt-tl-dot" aria-hidden="true"></span>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#FF6633] mb-1">Step 02</p>
+              <h4 class="font-bold text-[#002255] mb-3">ハッシュタグ戦略（大・中・小）</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-5">競争の激しい「大」と、ニッチな「小」のバランスを取り、「中」で接点を広げます。目安比率の一例を図にまとめました。</p>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-6 p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+                <div class="flex-shrink-0 mx-auto sm:mx-0" role="img" aria-label="ハッシュタグ比率：大20パーセント、中50パーセント、小30パーセント">
+                  <div class="w-36 h-36 rounded-full shadow-inner mx-auto" style="background:conic-gradient(#002255 0deg 72deg,#FF6633 72deg 252deg,#cbd5e1 252deg 360deg)"></div>
+                </div>
+                <div class="flex-1 space-y-3 text-sm">
+                  <div class="flex items-center justify-between gap-2 border-b border-slate-200/90 pb-2">
+                    <span><span class="opt-pie-legend"><span style="background:#002255"></span></span>大（ボリューム）</span>
+                    <span class="font-semibold text-[#002255]">20%</span>
+                  </div>
+                  <div class="flex items-center justify-between gap-2 border-b border-slate-200/90 pb-2">
+                    <span><span class="opt-pie-legend"><span style="background:#FF6633"></span></span>中（バランス）</span>
+                    <span class="font-semibold text-[#002255]">50%</span>
+                  </div>
+                  <div class="flex items-center justify-between gap-2">
+                    <span><span class="opt-pie-legend"><span style="background:#94a3b8"></span></span>小（ニッチ）</span>
+                    <span class="font-semibold text-[#002255]">30%</span>
+                  </div>
+                  <p class="text-xs text-slate-500 pt-1">※業界・投稿形式により最適な配分は変わります。まずはこのバランスを基準に調整してください。</p>
+                </div>
+              </div>
+            </div>
+            <div class="opt-tl-item">
+              <span class="opt-tl-dot" aria-hidden="true"></span>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#FF6633] mb-1">Step 03</p>
+              <h4 class="font-bold text-[#002255] mb-3">アクティビティ（日々の交流）</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">ターゲットに近いアカウントへの自然な交流が、認知とフィードバックの両方に効きます。目安の数値は以下を参考にしてください。</p>
+              <ul class="space-y-2 text-sm text-slate-700">
+                <li class="flex flex-wrap items-baseline gap-2"><i data-lucide="heart" class="w-4 h-4 text-[#FF6633] shrink-0" aria-hidden="true"></i> いいね <strong class="text-[#002255] text-base font-bold">20〜50件</strong> / 日（ターゲット周辺）</li>
+                <li class="flex flex-wrap items-baseline gap-2"><i data-lucide="message-circle" class="w-4 h-4 text-[#FF6633] shrink-0" aria-hidden="true"></i> 保存・ストーリーズ反応 <strong class="text-[#002255] text-base font-bold">継続的に</strong>（週のペースを固定）</li>
+                <li class="flex flex-wrap items-baseline gap-2"><i data-lucide="users" class="w-4 h-4 text-[#FF6633] shrink-0" aria-hidden="true"></i> フォロー整理 <strong class="text-[#002255] text-base font-bold">月1回</strong> 程度の見直し</li>
+              </ul>
+            </div>
+            <div class="opt-tl-item">
+              <span class="opt-tl-dot" aria-hidden="true"></span>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#FF6633] mb-1">Step 04</p>
+              <h4 class="font-bold text-[#002255] mb-3">トラフィックと土台づくり</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-5">初期段階では「バズ」より<strong class="text-[#002255]">再現可能な流入の土台</strong>が重要です。検索・シェア・保存が積み上がる構造を先に整えます。</p>
+              <div class="flex flex-col sm:flex-row items-center gap-5 p-5 rounded-xl bg-[#f8fafc] border border-slate-200/80">
+                <div class="flex-shrink-0 text-[#002255]" aria-hidden="true">
+                  <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto">
+                    <rect x="10" y="68" width="100" height="8" rx="1" fill="#002255" opacity="0.35"/>
+                    <rect x="18" y="60" width="84" height="8" rx="1" fill="#002255" opacity="0.55"/>
+                    <rect x="26" y="52" width="68" height="8" rx="1" fill="#002255" opacity="0.75"/>
+                    <rect x="34" y="22" width="52" height="30" rx="2" stroke="#002255" stroke-width="2" fill="#fff"/>
+                    <path d="M34 38h52M50 22v30M70 22v30" stroke="#002255" stroke-width="1.2" opacity="0.4"/>
+                    <rect x="48" y="12" width="24" height="10" rx="1" fill="#FF6633" opacity="0.9"/>
+                  </svg>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed flex-1">建物の土台と同様、プロフィール導線・固定投稿・CTAが固まっていないと、その上に載る施策が揺らぎます。まず「見つけてもらう → 保存される → 戻ってくる」の流れを弱い力で回すことを優先します。</p>
+              </div>
+            </div>
+            <div class="opt-tl-item">
+              <span class="opt-tl-dot" aria-hidden="true"></span>
+              <p class="text-xs font-bold uppercase tracking-wider text-[#FF6633] mb-1">Step 05</p>
+              <h4 class="font-bold text-[#002255] mb-2">検証と改善</h4>
+              <p class="text-sm text-slate-600 leading-relaxed">インサイトで保存・リーチ・フォロワー推移を週次で確認し、うまくいった投稿の型を次に繋げます。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- セクション3：要約 -->
+        <div class="mb-8 pt-6 border-t border-slate-200/90">
+          <div class="flex gap-4 items-start mb-5">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-lg sm:text-xl font-bold text-[#002255] leading-snug pt-0.5 flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-6 h-6 text-[#002255] shrink-0" aria-hidden="true"></i>
+              <span>要約</span>
+            </h3>
+          </div>
+          <p class="text-sm text-slate-600 mb-5">運用のチェックリストとして、次の4点を意識してみてください。</p>
+          <div class="grid sm:grid-cols-2 gap-3 max-w-2xl">
+            <label class="opt-check-row cursor-pointer"><input type="checkbox" name="opt-summary" value="daily"> <span class="text-sm text-slate-700">1日1投稿（または週の本数を固定）</span></label>
+            <label class="opt-check-row cursor-pointer"><input type="checkbox" name="opt-summary" value="engage"> <span class="text-sm text-slate-700">ターゲットとの交流を欠かさない</span></label>
+            <label class="opt-check-row cursor-pointer"><input type="checkbox" name="opt-summary" value="30days"> <span class="text-sm text-slate-700">30日間は継続を最優先する</span></label>
+            <label class="opt-check-row cursor-pointer"><input type="checkbox" name="opt-summary" value="test"> <span class="text-sm text-slate-700">露出・ハッシュタグは小さくテストする</span></label>
+          </div>
+        </div>
+
+        <!-- リーガル -->
+        <div class="opt-legal-box rounded-lg px-4 py-4 mt-8">
+          <p class="text-[12px] leading-relaxed text-slate-600">
+            ※本ページに記載の内容は一般的な運用の参考情報であり、特定の効果や順位を保証するものではありません。Instagramの仕様・ガイドラインは変更される場合があります。最新の公式情報をご確認のうえご利用ください。第三者の権利を侵害する行為はおやめください。必要に応じて専門家へご相談ください。
+          </p>
+          <p class="text-[12px] text-slate-500 mt-3">運営元：株式会社ホットセラー</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- おすすめタブ上位表示（ビジュアル重視マガジン） -->
+    <section id="section-recommend" class="guide-section mb-12 sm:mb-16 scroll-mt-8">
+      <article class="guide-article p-8 sm:p-10 lg:p-12">
+        <p class="guide-lead mb-4">なぜ、あの人の投稿はいつも『おすすめ』に載るの？</p>
+        <h2 class="text-base sm:text-lg font-medium text-[#002255] mb-12 sm:mb-14 leading-relaxed">Instagramおすすめタブ人気投稿に載る方法｜最新アルゴリズム解説</h2>
+
+        <div id="about" class="scroll-mt-8 mb-14 sm:mb-16">
+          <div class="flex gap-5 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-[#002255] leading-snug pt-0.5"><i class="fa-regular fa-compass text-[#002255] mr-2 text-[1.1em] align-[-0.08em]" aria-hidden="true"></i>そもそもおすすめタブとは？</h3>
+          </div>
+          <div class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-4 pl-0 sm:pl-1">
+            <p>おすすめタブとは、特定のキーワードやハッシュタグを検索した際に表示される投稿エリアです。</p>
+            <p>このエリアには、Instagramのアルゴリズムによって<strong class="text-[#002255]">人気度・エンゲージメント・投稿内容の質・ユーザーの興味関心</strong>などを総合的に分析した上で、最適な投稿が表示されます。</p>
+            <p>ブランドの認知拡大やフォロワー増加を目指すアカウントにとって、最も重要な露出エリアの一つと言えるでしょう。</p>
+          </div>
+        </div>
+
+        <div id="importance" class="scroll-mt-8 mb-14 sm:mb-16">
+          <div class="flex gap-5 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-[#002255] leading-snug pt-0.5"><i class="fa-regular fa-star text-[#002255] mr-2 text-[1.1em] align-[-0.08em]" aria-hidden="true"></i>おすすめタブの上位に表示される重要性</h3>
+          </div>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-8 sm:mb-10">おすすめタブの上位に表示されることは、単に「いいね」が増えるだけではありません。アカウントの成長やビジネス成果に大きく影響します。</p>
+          <div class="grid sm:grid-cols-2 gap-6 sm:gap-8">
+            <article class="guide-merit-card">
+              <span class="guide-merit-num" aria-hidden="true">01</span>
+              <h4 class="font-bold text-[#002255] mb-3 pt-10 text-base sm:text-lg relative z-[1]">新規ユーザーへの強力な露出</h4>
+              <div class="text-sm text-slate-600 leading-relaxed space-y-3 relative z-[1]">
+                <p>おすすめタブに表示される投稿は、フォロワー以外のユーザーにも広く表示されます。そのため、広告費をかけなくてもブランドや商品を広く認知させる効果があります。</p>
+                <p>特に検索経由のユーザーは関心が高く、通常の投稿と比較して<strong class="text-[#002255]">購入・問い合わせにつながる確率が高い傾向</strong>があります。</p>
+              </div>
+            </article>
+            <article class="guide-merit-card">
+              <span class="guide-merit-num" aria-hidden="true">02</span>
+              <h4 class="font-bold text-[#002255] mb-3 pt-10 text-base sm:text-lg relative z-[1]">Instagramから評価されやすくなる</h4>
+              <div class="text-sm text-slate-600 leading-relaxed space-y-3 relative z-[1]">
+                <p>一度人気投稿として認識されたアカウントは、Instagramのアルゴリズムから<strong class="text-[#002255]">信頼性の高いアカウント</strong>として評価されます。</p>
+                <p>その結果、以降の投稿でも・フィード・リール・発見タブなどで<strong class="text-[#002255]">表示優先度が上がる可能性</strong>があります。</p>
+              </div>
+            </article>
+            <article class="guide-merit-card">
+              <span class="guide-merit-num" aria-hidden="true">03</span>
+              <h4 class="font-bold text-[#002255] mb-3 pt-10 text-base sm:text-lg relative z-[1]">フォロワー数に関係なくリーチが拡大</h4>
+              <div class="text-sm text-slate-600 leading-relaxed space-y-3 relative z-[1]">
+                <p>フォロワーが少ないアカウントでも、おすすめタブに表示されることで<strong class="text-[#002255]">数万回以上の閲覧数</strong>を獲得するケースもあります。これは投稿表示回数（インプレッション）と実際に見たユーザー数（リーチ）の両方が大きく伸びるためです。</p>
+                <p>結果としてフォロワー増加・保存数増加・問い合わせ増加などにつながります。</p>
+              </div>
+            </article>
+            <article class="guide-merit-card">
+              <span class="guide-merit-num" aria-hidden="true">04</span>
+              <h4 class="font-bold text-[#002255] mb-3 pt-10 text-base sm:text-lg relative z-[1]">売上につながる導線が作れる</h4>
+              <div class="text-sm text-slate-600 leading-relaxed space-y-3 relative z-[1]">
+                <p>おすすめタブに掲載されると<strong class="text-[#002255]">投稿閲覧 → プロフィール訪問 → DM / 問い合わせ</strong>という自然な流れが生まれます。</p>
+                <p>特に・美容サロン・アパレル・飲食店・ブランド運営などのビジネスでは、直接的な集客や売上につながるケースが多いのが特徴です。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div id="points" class="scroll-mt-8 mb-14 sm:mb-16">
+          <div class="flex gap-5 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-[#002255] leading-snug pt-0.5"><i class="fa-solid fa-bullseye text-[#002255] mr-2 text-[1.1em] align-[-0.08em]" aria-hidden="true"></i>掲載を狙うためのポイント</h3>
+          </div>
+          <div class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-6">
+            <p>Instagramのアルゴリズムは、<strong class="text-[#002255]">投稿直後の反応を非常に重要視</strong>しています。特に以下の指標が総合的に評価されます。</p>
+            <div class="py-4 sm:py-6">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 text-center sm:text-left">アルゴリズム評価指標（スキルバッジ）</p>
+              <div class="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-4">
+                <div class="relative rounded-lg guide-badge-priority bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[#FF6633] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">最重要！</span>
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-regular fa-bookmark mr-1.5" aria-hidden="true"></i>保存数</span>
+                </div>
+                <div class="relative rounded-lg guide-badge-priority bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[#FF6633] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">最重要！</span>
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-regular fa-clock mr-1.5" aria-hidden="true"></i>滞在時間</span>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-solid fa-share-nodes mr-1.5" aria-hidden="true"></i>シェア数</span>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-regular fa-comments mr-1.5" aria-hidden="true"></i>コメント数</span>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-regular fa-heart mr-1.5" aria-hidden="true"></i>いいね数</span>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm min-w-[7rem] text-center">
+                  <span class="text-sm font-bold text-[#002255]"><i class="fa-regular fa-eye mr-1.5" aria-hidden="true"></i>投稿の閲覧数</span>
+                </div>
+              </div>
+            </div>
+            <p>これらの指標が投稿直後から自然に伸びることで、アルゴリズムの評価が高まり、おすすめタブへ表示される可能性が高くなります。しかし、これらの指標を個人で短時間に集めることは非常に難しいのが現実です。</p>
+            <p>そのため、Instagramマーケティングでは<strong class="text-[#002255]">専門サービスを活用した初期エンゲージメントの最適化</strong>が重要になります。</p>
+          </div>
+        </div>
+
+        <div id="marketing" class="scroll-mt-8 mb-14 sm:mb-16">
+          <div class="flex gap-5 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-[#002255] leading-snug pt-0.5"><i class="fa-solid fa-chart-line text-[#002255] mr-2 text-[1.1em] align-[-0.08em]" aria-hidden="true"></i>マーケティングで重要なポイント</h3>
+          </div>
+          <div class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-4">
+            <p>おすすめタブ掲載を狙うには</p>
+            <ul class="list-disc pl-5 space-y-2 marker:text-[#FF6633]">
+              <li>投稿タイミング</li>
+              <li>初期エンゲージメント</li>
+              <li>保存・シェア指標</li>
+              <li>投稿の閲覧維持率</li>
+            </ul>
+            <p>などを総合的に調整する必要があります。これらを適切に設計することで、アルゴリズム上での評価が高まり、投稿の露出が拡大します。</p>
+          </div>
+        </div>
+
+        <div id="summary" class="scroll-mt-8 pt-8 sm:pt-10 border-t border-slate-200/90">
+          <div class="flex gap-5 items-start mb-6">
+            <span class="guide-section-accent" aria-hidden="true"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-[#002255] leading-snug pt-0.5"><i class="fa-regular fa-circle-check text-[#002255] mr-2 text-[1.1em] align-[-0.08em]" aria-hidden="true"></i>まとめ</h3>
+          </div>
+          <div class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-4">
+            <p>Instagramのおすすめタブに掲載される投稿は、単に「いいね数が多い投稿」ではありません。それは</p>
+            <ul class="list-disc pl-5 space-y-2 marker:text-[#FF6633]">
+              <li>アカウントの信頼性</li>
+              <li>ブランド認知</li>
+              <li>フォロワー増加</li>
+              <li>売上向上</li>
+            </ul>
+            <p>に直結する、非常に重要なマーケティング戦略の一つです。しかし、アルゴリズムを理解しながらエンゲージメントを最適化することは、個人で行うには難しい部分も多くあります。</p>
+            <p>そのため、Instagramマーケティングでは<strong class="text-[#002255]">専門サービスを活用した戦略的な運用</strong>が効果的です。</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 無料診断へ誘導（トップページと同系統） -->
+    <section id="section-diagnosis" class="guide-section mb-12 sm:mb-16 scroll-mt-8" aria-labelledby="cta-diagnosis-heading">
+      <p class="text-center text-slate-600 text-sm sm:text-base mb-6 leading-relaxed max-w-2xl mx-auto">自分でやるのは難しい…と思ったら、まずはプロによる診断から始めませんか。</p>
+      <div class="rounded-xl p-8 sm:p-10 text-white shadow-xl bg-gradient-to-br from-[#0f2d52] to-[#1e3a5f] border border-blue-400/20">
+        <p class="text-xs font-bold tracking-widest uppercase text-blue-200 mb-2">4 — JEMIA限定</p>
+        <h2 id="cta-diagnosis-heading" class="text-2xl sm:text-3xl font-bold mb-3 text-white">【JEMIA限定】あなたのアカウントの「露出余地」を無料診断</h2>
+        <p class="text-sm sm:text-base text-blue-100 mb-8 leading-relaxed">「今、どのキーワードを攻めればもっと流入数が増えるか？」「なぜ現在のリーチが伸び悩んでいるのか？」プロがあなたの代わりに分析します。</p>
+        <button type="button" data-inquiry="無料キーワード診断" class="btn-cta-shimmer px-6 py-3 bg-amber-400 text-body text-sm font-bold rounded-lg hover:bg-amber-300 transition shadow relative inline-flex items-center gap-2">
+          <i class="fa-regular fa-clipboard text-[#1a1a1a]" aria-hidden="true"></i>
+          無料で診断を申し込む
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal: Contact Form（トップページと同じ） -->
+  <div id="contact-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+    <div class="fixed inset-0 bg-black/50" id="modal-backdrop"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto pointer-events-auto" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+        <div class="p-6 sm:p-8">
+          <h2 id="modal-title" class="text-lg font-semibold text-primary-900">お問い合わせ</h2>
+          <form id="contact-form" class="mt-6 space-y-4 relative" action="#" method="post">
+            <input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0" style="clip: rect(0, 0, 0, 0); clip-path: inset(50%);">
+            <input type="hidden" name="inquiry_type" id="inquiry_type" value="">
+            <div class="mb-4">
+              <label for="name" class="block text-sm font-bold text-body mb-1">お名前 <span class="text-red-500">*</span></label>
+              <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+              <label for="email" class="block text-sm font-bold text-body mb-1">メールアドレス <span class="text-red-500">*</span></label>
+              <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">種別</label>
+              <div class="flex gap-4 mt-1">
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="entity" value="individual" checked class="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500">
+                  <span class="text-sm text-body">個人</span>
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="entity" value="corporate" class="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500">
+                  <span class="text-sm text-body">法人</span>
+                </label>
+              </div>
+            </div>
+            <div id="company-field" class="mb-4 hidden">
+              <label for="company" class="block text-sm font-bold text-body mb-1">会社名 <span class="text-red-500">*</span></label>
+              <input type="text" id="company" name="company" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">業種 <span class="text-red-500">*</span></label>
+              <select name="industry" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                <option value="">選択してください</option>
+                <option value="美容・サロン">美容・サロン</option>
+                <option value="飲食店">飲食店</option>
+                <option value="ECショップ">ECショップ</option>
+                <option value="パーソナルジム">パーソナルジム</option>
+                <option value="不動産・建築">不動産・建築</option>
+                <option value="スクール・教育">スクール・教育</option>
+                <option value="クリニック・医療">クリニック・医療</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">問い合わせ種別</label>
+              <p id="inquiry-display" class="mt-1 text-sm text-primary-700 font-medium bg-primary-50 px-3 py-2 rounded-lg"></p>
+            </div>
+            <div id="product-interest-block" class="mb-4 hidden">
+              <p class="block text-sm font-bold text-body mb-2">興味のある商品を選択 <span class="text-gray-400 text-xs font-normal">(任意・複数可)</span></p>
+              <div class="border border-gray-300 rounded-md px-3 py-3 space-y-2.5 max-h-56 overflow-y-auto">
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="いいね代行" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>いいね代行</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="おすすめ発見表示" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>おすすめ発見表示</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="アカウント活性化＋発見表示ブースト" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>アカウント活性化＋発見表示ブースト</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="アカウントリスト上位表示" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>アカウントリスト上位表示</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="プレミアム・オーダーメイド" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>プレミアム・オーダーメイド</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="無料キーワード診断" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>無料キーワード診断</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="その他" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>その他</span>
+                </label>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">InstagramアカウントID <span class="text-gray-400 text-xs">(任意)</span></label>
+              <input type="text" name="instagram_id" placeholder="@example" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+              <p class="text-[10px] text-slate-500 mt-1">※事前に診断をご希望の場合はご入力ください</p>
+            </div>
+            <div class="mb-4">
+              <label for="inquiry-message" class="block text-sm font-bold text-body mb-1">ご質問・その他 <span class="text-red-500">*</span></label>
+              <textarea id="inquiry-message" name="message" rows="3" required placeholder="ご質問やご要望をご記入ください（必須）" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-y"></textarea>
+            </div>
+            <div class="pt-2 flex gap-3">
+              <button type="submit" class="flex-1 px-4 py-2.5 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition">
+                送信する
+              </button>
+              <button type="button" id="modal-close" class="px-4 py-2.5 border border-gray-300 text-body text-sm font-medium rounded-lg hover:bg-gray-50 transition">
+                キャンセル
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thanks popup（送信完了） -->
+  <div id="thanks-modal" class="fixed inset-0 z-[60] hidden" aria-hidden="true" role="dialog" aria-labelledby="thanks-title" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-500/40 backdrop-blur-[1px]" id="thanks-backdrop"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div class="relative bg-white border-2 border-[#002255] rounded-xl shadow-xl max-w-md w-full p-8 text-center pointer-events-auto">
+        <h3 id="thanks-title" class="text-xl font-bold text-[#002255] mb-4">Message Sent! ✨</h3>
+        <p class="text-sm text-slate-700 leading-relaxed mb-6">お問い合わせありがとうございます。内容を確認し、担当者よりメールにてご連絡いたします。今しばらくお待ちください。</p>
+        <button type="button" id="thanks-close" class="w-full px-4 py-2.5 rounded-lg text-white text-sm font-semibold bg-[#FF6633] hover:opacity-90 transition shadow-sm">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 共通フッター（既存と同じ） -->
+  <footer class="border-t border-slate-200 bg-[#f8fafc] text-[#1e293b] py-12 font-sans relative z-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row md:items-start gap-10 md:gap-8 text-center md:text-left">
+        <div class="md:flex-1 order-1">
+          <p class="font-bold text-lg tracking-tight text-[#1e293b] mb-2">JEMIA</p>
+          <p class="text-sm text-slate-600 leading-relaxed">Instagram運用を、もっと自由に。もっとスマートに。</p>
+          <p class="text-xs text-slate-500 mt-4 md:block hidden">© 2026 株式会社ホットセラー. All rights reserved.</p>
+        </div>
+        <div class="md:flex-1 order-2">
+          <p class="text-sm font-semibold text-[#1e293b] mb-1">受付時間</p>
+          <p class="text-sm text-slate-600 mb-2">平日 09:00 - 18:00（土日祝日は除く）</p>
+          <p class="text-xs text-slate-500 leading-relaxed">時間外のお問い合わせは次の相談時間に順次返答しております。</p>
+        </div>
+        <div class="md:flex-1 order-3">
+          <nav class="flex flex-col sm:flex-row md:flex-col gap-3 justify-center md:justify-start" aria-label="フッターナビゲーション">
+            <a href="privacy.html" class="text-sm text-slate-600 hover:text-[#1e293b] underline underline-offset-2 transition">プライバシーポリシー</a>
+            <a href="index.html" class="text-sm text-slate-600 hover:text-[#1e293b] underline underline-offset-2 transition">トップへ</a>
+          </nav>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 text-center mt-8 md:hidden order-4">© 2026 株式会社ホットセラー. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+  </script>
+  <script>
+    (function () {
+      var modal = document.getElementById('contact-modal');
+      var backdrop = document.getElementById('modal-backdrop');
+      var closeBtn = document.getElementById('modal-close');
+      var inquiryInput = document.getElementById('inquiry_type');
+      var inquiryDisplay = document.getElementById('inquiry-display');
+      var companyField = document.getElementById('company-field');
+      var companyInput = document.getElementById('company');
+      var entityRadios = document.querySelectorAll('input[name="entity"]');
+      var form = document.getElementById('contact-form');
+      var productInterestBlock = document.getElementById('product-interest-block');
+      var thanksModal = document.getElementById('thanks-modal');
+      var thanksBackdrop = document.getElementById('thanks-backdrop');
+      var thanksClose = document.getElementById('thanks-close');
+      var emailInput = document.getElementById('email');
+      var emailFormatRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (emailInput) {
+        emailInput.addEventListener('input', function () {
+          emailInput.setCustomValidity('');
+        });
+      }
+
+      function openThanksModal() {
+        if (!thanksModal) return;
+        thanksModal.classList.remove('hidden');
+        thanksModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (thanksClose) thanksClose.focus();
+      }
+
+      function closeThanksModal() {
+        if (!thanksModal) return;
+        thanksModal.classList.add('hidden');
+        thanksModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      if (thanksClose) thanksClose.addEventListener('click', closeThanksModal);
+      if (thanksBackdrop) thanksBackdrop.addEventListener('click', closeThanksModal);
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && thanksModal && !thanksModal.classList.contains('hidden')) {
+          closeThanksModal();
+        }
+      });
+
+      function shouldShowProductInterest(label) {
+        return label === 'プレミアム・オーダーメイド（内容セレクト・料金交渉）' || label === '無料キーワード診断';
+      }
+
+      function setProductInterestVisible(show) {
+        if (!productInterestBlock) return;
+        productInterestBlock.classList.toggle('hidden', !show);
+        form.querySelectorAll('input[name="product_interest[]"]').forEach(function (inp) {
+          inp.disabled = !show;
+          if (!show) inp.checked = false;
+        });
+      }
+
+      function updateCompanyRequired() {
+        var isCorporate = document.querySelector('input[name="entity"]:checked').value === 'corporate';
+        companyField.classList.toggle('hidden', !isCorporate);
+        companyInput.required = isCorporate;
+        if (!isCorporate) companyInput.value = '';
+      }
+
+      function openModal(inquiryLabel) {
+        inquiryInput.value = inquiryLabel;
+        inquiryDisplay.textContent = inquiryLabel;
+        setProductInterestVisible(shouldShowProductInterest(inquiryLabel));
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateCompanyRequired();
+      }
+
+      function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('[data-inquiry]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          openModal(this.getAttribute('data-inquiry'));
+        });
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+
+      entityRadios.forEach(function (radio) {
+        radio.addEventListener('change', updateCompanyRequired);
+      });
+
+      function buildContactPayload(formEl) {
+        var fd = new FormData(formEl);
+        var interests = [];
+        formEl.querySelectorAll('input[name="product_interest[]"]:checked').forEach(function (cb) {
+          interests.push(cb.value);
+        });
+        return {
+          website: fd.get('website') || '',
+          name: fd.get('name') || '',
+          email: fd.get('email') || '',
+          entity: fd.get('entity') || '',
+          company: fd.get('company') || '',
+          industry: fd.get('industry') || '',
+          inquiry_type: fd.get('inquiry_type') || '',
+          product_interest: interests,
+          instagram_id: fd.get('instagram_id') || '',
+          message: fd.get('message') || ''
+        };
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        var messageEl = document.getElementById('inquiry-message');
+        if (!messageEl.value.trim()) {
+          messageEl.setCustomValidity('ご質問・その他をご記入ください。');
+          messageEl.reportValidity();
+          messageEl.setCustomValidity('');
+          return;
+        }
+        if (emailInput && !emailFormatRe.test(emailInput.value.trim())) {
+          emailInput.setCustomValidity('正しいメールアドレスの形式でご入力ください。');
+          emailInput.reportValidity();
+          emailInput.setCustomValidity('');
+          return;
+        }
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
+        if (submitBtn.disabled) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '送信中...';
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify(buildContactPayload(form))
+        })
+          .then(function (res) {
+            return res.text().then(function (text) {
+              var data;
+              try {
+                data = JSON.parse(text);
+              } catch (err) {
+                throw new Error();
+              }
+              return { data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data && result.data.ok) {
+              closeModal();
+              form.reset();
+              setProductInterestVisible(shouldShowProductInterest(inquiryInput.value));
+              updateCompanyRequired();
+              openThanksModal();
+            } else {
+              var msg = (result.data && result.data.error) ? result.data.error : '送信に失敗しました。しばらくしてから再度お試しください。';
+              alert(msg);
+            }
+          })
+          .catch(function () {
+            alert('送信に失敗しました。しばらくしてから再度お試しください。');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

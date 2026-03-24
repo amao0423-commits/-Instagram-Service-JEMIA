@@ -1,0 +1,7 @@
+# 本番で上書きするメール設定（サンプルは mail-config.sample.php）
+mail-config.php
+
+# 環境変数（Vercel / ローカル）
+.env
+.env.local
+.env*.local

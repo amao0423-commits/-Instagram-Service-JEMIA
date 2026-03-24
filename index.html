@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サービス一覧｜アカウント運用・検索上位表示</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', '"Hiragino Kaku Gothic ProN"', 'Meiryo', 'sans-serif'],
+            num: ['Montserrat', '"Noto Sans JP"', 'sans-serif']
+          },
+          colors: {
+            primary: { 50: '#eef2f6', 100: '#dce5ed', 200: '#b9c9db', 300: '#8fa8c4', 400: '#5c7a9e', 500: '#3d5a7a', 600: '#002255', 700: '#001d44', 800: '#001633', 900: '#000f22' },
+            blue: { 50: '#eef2f6', 100: '#dce5ed', 200: '#b9c9db', 300: '#8fa8c4', 400: '#5c7a9e', 500: '#3d5a7a', 600: '#002255', 700: '#001d44', 800: '#001633', 900: '#000f22' },
+            body: '#1a1a1a',
+            accent: { DEFAULT: '#ff6633', hover: '#e65c2e', muted: '#fff0eb' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    /* タイポグラフィ統一：メイン見出し（画像再現） */
+    h1, h2 { letter-spacing: -0.02em; line-height: 1.45; font-weight: 700; }
+    /* 数字用：価格・STEP番号など Montserrat Bold */
+    .font-num { font-family: Montserrat, 'Noto Sans JP', sans-serif; font-weight: 700; }
+    [data-inquiry] { cursor: pointer; }
+    .illust-float { animation: illustFloat 3s ease-in-out infinite; }
+    @keyframes illustFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .card-icon-wrap:hover .card-icon-svg { transform: scale(1.08); transition: transform 0.3s ease; }
+    .jemia-feature-chat-tilt { transform: rotate(-4deg); }
+    .card-icon-wrap:hover .jemia-feature-chat-tilt { transform: rotate(-4deg) scale(1.05); transition: transform 0.3s ease; }
+    /* JEMIAの特徴：リッチな3Dステップバッジ */
+    .feature-step-badge {
+      font-family: Montserrat, 'Noto Sans JP', sans-serif;
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(165deg, #1a4a6e 0%, #002255 45%, #001122 100%);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.15),
+        0 6px 16px rgba(0,34,85,0.4);
+      z-index: 2;
+    }
+    .feature-step-bg-num {
+      position: absolute;
+      top: -4px;
+      left: 8px;
+      font-family: Montserrat, 'Noto Sans JP', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: rgba(248,250,252,0.5);
+      line-height: 1;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 戦略の必然性：Afterカードのブランドカラー光彩 */
+    .strategy-after-glow {
+      box-shadow: 0 0 0 1px rgba(0, 34, 85, 0.2), 0 0 24px rgba(0, 34, 85, 0.25), 0 0 48px rgba(0, 34, 85, 0.12);
+    }
+    /* 戦略の必然性：点線コネクタ・ブリッジエリア（JEMIAのアクション） */
+    .strategy-connector-dashed {
+      stroke: #94a3b8;
+      stroke-width: 1.2;
+      stroke-dasharray: 4 3;
+      fill: none;
+      stroke-linecap: round;
+    }
+    .strategy-bridge {
+      min-width: 0;
+    }
+    /* 導入の流れ：横並びカード */
+    .flow-card {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08), 0 10px 20px -5px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .flow-card h3 {
+      text-align: center;
+    }
+    /* STEP 01 のみ：リボン配置用（カード基準・はみ出し可） */
+    .flow-card-with-ribbon {
+      position: relative;
+      overflow: visible;
+    }
+    .flow-step-badge-circle {
+      font-family: Montserrat, 'Noto Sans JP', sans-serif;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(165deg, #1a4a6e 0%, #002255 45%, #001122 100%);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.15), 0 6px 16px rgba(0,34,85,0.4);
+      flex-shrink: 0;
+    }
+    /* 導入の流れ：最短即日START！バッジ（角丸・右上にはみ出し） */
+    .flow-start-badge {
+      font-family: 'Noto Sans JP', sans-serif;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      padding: 6px 12px;
+      background: #ff6633;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(255, 102, 51, 0.45);
+      z-index: 2;
+      white-space: nowrap;
+      animation: flowBadgeFloat 2.5s ease-in-out infinite;
+    }
+    /* 導入の流れ：垂直タイムライン用3Dステップバッジ */
+    .flow-step-badge-3d {
+      background: linear-gradient(165deg, #1a4a6e 0%, #002255 45%, #001122 100%);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.15), 0 6px 16px rgba(0,34,85,0.4);
+      position: relative;
+      z-index: 1;
+    }
+    /* 最短即日START！リボン（01の右上・数字と被らない） */
+    .flow-start-ribbon {
+      font-family: 'Noto Sans JP', sans-serif;
+      position: absolute;
+      top: -4px;
+      right: 0;
+      padding: 6px 12px;
+      background: linear-gradient(180deg, #ff8a66 0%, #ff6633 50%, #e65c2e 100%);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 0 1rem 0 0.5rem;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.3) inset,
+        0 6px 20px rgba(255, 102, 51, 0.45),
+        0 2px 10px rgba(0, 0, 0, 0.12);
+      z-index: 2;
+      white-space: nowrap;
+      transform: translate(6px, -4px) rotate(8deg);
+      transform-origin: 100% 0%;
+      animation: flowRibbonFloat 2.5s ease-in-out infinite;
+    }
+    @media (min-width: 640px) {
+      .flow-start-ribbon { font-size: 0.875rem; padding: 8px 14px; }
+    }
+    /* いいね代行：詳細エリアの開閉アニメーション */
+    .detail-expand-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease-out;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .detail-expand-content.is-open {
+      grid-template-rows: 1fr;
+    }
+    .detail-expand-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .detail-expand-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      margin-top: 0.5rem;
+      padding: 1rem 1.25rem;
+    }
+    .detail-toggle-btn {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .detail-toggle-btn .arrow {
+      transition: transform 0.3s ease;
+    }
+    .detail-section:has(.detail-expand-content.is-open) .detail-toggle-btn .arrow {
+      transform: rotate(180deg);
+    }
+    @keyframes flowBadgeFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes flowRibbonFloat {
+      0%, 100% { transform: translate(6px, -4px) rotate(8deg) translateY(0); }
+      50% { transform: translate(6px, -4px) rotate(8deg) translateY(-4px); }
+    }
+    /* キーワード実績：マーキー無限横スクロール */
+    .keyword-marquee-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 640px) {
+      .keyword-marquee-rows { gap: 2rem; }
+    }
+    .keyword-marquee-wrap { overflow: hidden; }
+    .keyword-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: keywordMarqueeL 60s linear infinite;
+      gap: 0.75rem;
+    }
+    .keyword-marquee-wrap[data-direction="right"] .keyword-marquee-track {
+      animation-name: keywordMarqueeR;
+    }
+    @keyframes keywordMarqueeL {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes keywordMarqueeR {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    /* キーワードバッジ（丸角UI・パステル統一・キラキラ装飾） */
+    .kw-badge {
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      border-radius: 1.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .kw-badge-food { background: #fff0eb; color: #8b2e0d; border: 1px solid #ffc9b3; }
+    .kw-badge-beauty { background: #fce7f3; color: #831843; border: 1px solid #fbcfe8; }
+    .kw-badge-cosme { background: #f3e8ff; color: #5b21b6; border: 1px solid #e9d5ff; }
+    .kw-badge-realestate { background: #dcfce7; color: #14532d; border: 1px solid #bbf7d0; }
+    .kw-badge-travel { background: #dce5ed; color: #002255; border: 1px solid #b9c9db; }
+    .kw-badge-fitness { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+    .kw-badge-other { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .kw-badge-foreign { background: #ede9fe; color: #4c1d95; border: 1px solid #ddd6fe; }
+    /* プレミアム・オーダーメイドプラン：ホワイトパール＋極薄ゴールドグラデボーダー（角丸維持） */
+    .premium-plan-card {
+      background: #ffffff;
+      border: 2px solid #f0e6d2;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 10px 20px -5px rgba(0,0,0,0.05), 0 0 0 1px rgba(245,230,200,0.6), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    /* プレミアムCTA：やや大きめ＋キラキラパーティクル＋shimmer */
+    .btn-premium-cta-wrap { position: relative; display: inline-block; }
+    .btn-premium-cta-wrap .particle { position: absolute; font-size: 0.625rem; opacity: 0.7; pointer-events: none; animation: particleTwinkle 1.8s ease-in-out infinite; }
+    .btn-premium-cta-wrap .particle:nth-child(1) { top: -2px; left: 8%; animation-delay: 0s; }
+    .btn-premium-cta-wrap .particle:nth-child(2) { top: -4px; right: 15%; animation-delay: 0.3s; }
+    .btn-premium-cta-wrap .particle:nth-child(3) { bottom: -2px; left: 20%; animation-delay: 0.6s; }
+    .btn-premium-cta-wrap .particle:nth-child(4) { bottom: -4px; right: 10%; animation-delay: 0.9s; }
+    .btn-premium-cta-wrap .particle:nth-child(5) { top: 50%; left: -6px; transform: translateY(-50%); animation-delay: 0.2s; }
+    .btn-premium-cta-wrap .particle:nth-child(6) { top: 50%; right: -6px; transform: translateY(-50%); animation-delay: 0.5s; }
+    @keyframes particleTwinkle { 0%, 100% { opacity: 0.35; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+    .btn-premium-cta-wrap .particle:nth-child(5),
+    .btn-premium-cta-wrap .particle:nth-child(6) { animation-name: particleTwinkleSide; }
+    @keyframes particleTwinkleSide { 0%, 100% { opacity: 0.35; transform: translateY(-50%) scale(0.85); } 50% { opacity: 1; transform: translateY(-50%) scale(1.15); } }
+    .btn-premium-cta {
+      position: relative;
+      overflow: hidden;
+      padding: 0.875rem 1.75rem;
+      font-size: 1rem;
+    }
+    .btn-premium-cta::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transition: left 0.6s ease;
+    }
+    .btn-premium-cta:hover::after {
+      left: 100%;
+    }
+    /* 全CTAボタン：Shimmer（左→右に光が走る）ループ */
+    .btn-shimmer, .subscr-cta, [data-inquiry] .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .subscr-cta::after, .btn-premium-cta::after,
+    .btn-cta-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmerLoop 2.5s ease-in-out infinite;
+    }
+    @keyframes shimmerLoop {
+      0% { left: -100%; }
+      60%, 100% { left: 150%; }
+    }
+    /* プランカード：ホバーでわずかに浮く */
+    .subscr-plan-card, .premium-plan-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .subscr-plan-card:hover, .premium-plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12), 0 20px 40px -12px rgba(0,0,0,0.08);
+    }
+    /* アコーディオン外オプション：チェックでJEMIAブルー背景（プラン詳細内は下で上書き） */
+    .subscr-opt:has(.subscr-opt-check:checked) span:last-child,
+    .subscr-opt:has(input:checked) span:last-child {
+      background-color: #002255;
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .subscr-opt label:has(input:checked) { background-color: #eef2f6; border-radius: 0.5rem; }
+    .detail-expand-panel .subscr-opt {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0;
+      margin: 0;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      transition: color 0.2s;
+    }
+    .detail-expand-panel .subscr-opt:has(input:checked) {
+      background: transparent;
+      border: none;
+      color: inherit;
+    }
+    .detail-expand-panel .subscr-opt:has(input:checked) span { color: inherit; }
+    /* プラン詳細・カスタマイズオプション：背景なし・ネイビー文字・太字 */
+    .detail-expand-panel .subscr-opt:has(.subscr-opt-check:checked) span:last-child,
+    .detail-expand-panel .subscr-opt:has(input:checked) span:last-child {
+      background: none;
+      background-color: transparent;
+      color: #002255;
+      font-weight: 700;
+      padding: 0;
+      border-radius: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .detail-expand-panel .subscr-opt span:last-child {
+      color: #64748b;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* ========== サービスと料金：かわいいデザイン ========== */
+    #services { background-color: #fffbf0; position: relative; }
+    #services .services-sparkle { position: absolute; pointer-events: none; font-size: 0.75rem; opacity: 0.6; }
+    #services .services-sparkle span { display: inline-block; animation: sparkleTwinkle 2s ease-in-out infinite; }
+    #services .services-sparkle .delay-1 { animation-delay: 0.3s; }
+    #services .services-sparkle .delay-2 { animation-delay: 0.8s; }
+    #services .services-sparkle .delay-3 { animation-delay: 1.2s; }
+    @keyframes sparkleTwinkle { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+    .services-plan-intro { font-family: 'Noto Sans JP', sans-serif; }
+    .services-plan-intro .intro-title { font-weight: 700; font-size: 1.125rem; }
+    .bubble-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; margin-top: 1rem; }
+    .bubble-item { display: flex; align-items: center; gap: 0.75rem; flex: 1 1 100%; max-width: 100%; }
+    @media (min-width: 640px) { .bubble-item { flex: 1 1 calc(50% - 0.5rem); max-width: calc(50% - 0.5rem); } }
+    .bubble-char { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .bubble-char.girl { background: linear-gradient(180deg, #ffd1dc 0%, #ffb6c1 100%); }
+    .bubble-char.boy { background: linear-gradient(180deg, #b8d4e8 0%, #87ceeb 100%); }
+    .bubble-char.bear { background: linear-gradient(180deg, #f5e6c8 0%, #e8d4a8 100%); }
+    .bubble-char.owl { background: linear-gradient(180deg, #fff9db 0%, #f5e6b8 50%, #e8d4a8 100%); box-shadow: 0 2px 8px rgba(184,134,11,0.2); }
+    .bubble-wrap { flex: 1; min-width: 0; }
+    .bubble-text { font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 1rem; position: relative; font-family: 'Noto Sans JP', sans-serif; }
+    .bubble-text::before { display: none; }
+    .bubble-item .bubble-text.pink { background: #ffebee; color: #880e4f; border: 1px solid #f8bbd9; }
+    .bubble-item .bubble-text.pink::before { border-right-color: #f8bbd9; }
+    .bubble-item .bubble-text.blue { background: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9; }
+    .bubble-item .bubble-text.blue::before { border-right-color: #90caf9; }
+    .bubble-item .bubble-text.yellow { background: #fffde7; color: #f57f17; border: 1px solid #fff59d; }
+    .bubble-item .bubble-text.yellow::before { border-right-color: #fff59d; }
+    .bubble-item .bubble-text.gold { background: #fff9db; color: #b8860b; border: 1px solid #f0e6c8; }
+    .bubble-item .bubble-text.gold::before { border-right-color: #f0e6c8; }
+    .bubble-label { font-size: 0.875rem; color: #5c5c5c; margin-bottom: 0.25rem; }
+    .plan-card-pink { background: #ffebee !important; border-color: #f8bbd9 !important; }
+    .plan-card-blue { background: #e3f2fd !important; border-color: #90caf9 !important; }
+    .plan-card-yellow { background: #fffde7 !important; border-color: #fff59d !important; }
+    .plan-card-purple { background: #f3e5f5 !important; border-color: #e1bee7 !important; }
+    .plan-badge-cute { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.75rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 500; }
+    .plan-card-pink .plan-badge-cute { background: rgba(255,255,255,0.8); border: 1px solid #f8bbd9; color: #880e4f; }
+    .plan-card-blue .plan-badge-cute { background: rgba(255,255,255,0.8); border: 1px solid #90caf9; color: #0d47a1; }
+    .plan-card-yellow .plan-badge-cute { background: rgba(255,255,255,0.8); border: 1px solid #fff59d; color: #b8860b; }
+    .plan-card-purple .plan-badge-cute { background: rgba(255,255,255,0.8); border: 1px solid #e1bee7; color: #4a148c; }
+    .btn-detail-cute { font-family: 'Noto Sans JP', sans-serif; font-size: 0.875rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 1.5rem; transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem; }
+    .btn-detail-cute:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .plan-card-pink .btn-detail-cute { background: #f8bbd9; color: #880e4f; border: 1px solid #f48fb1; }
+    .plan-card-blue .btn-detail-cute { background: #90caf9; color: #0d47a1; border: 1px solid #64b5f6; }
+    .plan-card-yellow .btn-detail-cute { background: #fff59d; color: #f57f17; border: 1px solid #ffee58; }
+    .plan-card-purple .btn-detail-cute { background: #e1bee7; color: #4a148c; border: 1px solid #ce93d8; }
+    .detail-toggle-wrap .btn-detail-cute .arrow { transition: transform 0.3s ease; }
+    .detail-section:has(.detail-expand-content.is-open) .detail-toggle-wrap .btn-detail-cute .arrow { transform: rotate(180deg); }
+    .subscr-opt-cute { position: relative; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
+    .subscr-opt-cute input[type="checkbox"],
+    .subscr-opt-cute .subscr-opt-check { appearance: none; width: 1.25rem; height: 1.25rem; border-radius: 50%; border: 2px solid #c4b5fd; background: #fff; cursor: pointer; flex-shrink: 0; transition: border-color 0.2s, background 0.2s; }
+    .subscr-opt-cute input[type="checkbox"]:checked,
+    .subscr-opt-cute .subscr-opt-check:checked { border-color: #8b5cf6; background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%); box-shadow: 0 0 0 2px rgba(139,92,246,0.3); }
+    /* プラン詳細内：チェック円はグレー枠／選択時ネイビー塗りつぶし */
+    .detail-expand-panel .subscr-opt-cute input[type="checkbox"],
+    .detail-expand-panel .subscr-opt-cute .subscr-opt-check { border: 2px solid #cbd5e1; background: #fff; }
+    .detail-expand-panel .subscr-opt-cute input[type="checkbox"]:checked,
+    .detail-expand-panel .subscr-opt-cute .subscr-opt-check:checked { border-color: #8b5cf6; background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%); box-shadow: 0 0 0 2px rgba(139,92,246,0.3); }
+    .subscr-opt-cute:has(input:checked) .opt-sparkle,
+    .subscr-opt-cute:has(.subscr-opt-check:checked) .opt-sparkle { display: inline-block; animation: sparklePop 0.4s ease; }
+    .subscr-opt-cute .opt-sparkle { display: none; font-size: 0.75rem; margin-left: 0.15rem; }
+    .detail-expand-panel .subscr-opt-cute .opt-sparkle { display: none !important; }
+    @keyframes sparklePop { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+    .detail-expand-panel .subscr-opt.subscr-opt-cute { background: transparent !important; border: none !important; padding: 0.5rem 0 !important; }
+    .detail-expand-panel .subscr-opt.subscr-opt-cute:has(input:checked),
+    .detail-expand-panel .subscr-opt.subscr-opt-cute:has(.subscr-opt-check:checked) { background: transparent !important; color: inherit !important; }
+    .detail-expand-panel .subscr-opt.subscr-opt-cute:has(input:checked) span,
+    .detail-expand-panel .subscr-opt.subscr-opt-cute:has(.subscr-opt-check:checked) span { color: inherit !important; }
+    .services-list-text { font-family: 'Noto Sans JP', 'Hiragino Maru Gothic ProN', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; font-size: 0.9375rem; }
+    #services .subscr-plan-card .subscr-main-area h3 { font-size: 1.25rem; }
+    @media (min-width: 640px) { #services .subscr-plan-card .subscr-main-area h3 { font-size: 1.375rem; } }
+    #services .subscr-main-area p { font-size: 0.9375rem; }
+    @media (min-width: 640px) { #services .subscr-main-area p { font-size: 1rem; } }
+
+    /* レビュー評価分布：スコア・星・件数・横バー */
+    .rating-score-text { font-family: Montserrat, 'Noto Sans JP', sans-serif; font-weight: 700; }
+    .rating-stars-gold { color: #ff6633; }
+    .rating-count-green { color: #16a34a; }
+    .rating-label-num { font-family: 'Noto Sans JP', sans-serif; font-weight: 500; }
+    .rating-bars-wrap { font-family: 'Noto Sans JP', sans-serif; font-weight: 500; }
+    .rating-bar-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+    .rating-bar-row:last-of-type { margin-bottom: 0; }
+    .rating-bar-num { width: 1rem; flex-shrink: 0; font-size: 0.75rem; color: #64748b; text-align: right; }
+    .rating-bar-track { flex: 1; height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; min-width: 0; }
+    .rating-bar-fill { height: 100%; border-radius: 4px; width: 0; transition: width 0.6s ease-out; }
+    .rating-bar-fill-5 { background: linear-gradient(90deg, #002255 0%, #3d5a7a 100%); }
+    .rating-bar-fill-4 { background: linear-gradient(90deg, #3d5a7a 0%, #5c7a9e 100%); }
+    #voices-rating-block.rating-bars-visible .rating-bar-fill[data-width="100"] { width: 100%; }
+    #voices-rating-block.rating-bars-visible .rating-bar-fill[data-width="20"] { width: 20%; }
+
+    /* 実際に利用した声：カルーセル */
+    .voices-carousel-outer { position: relative; overflow: hidden; width: 100%; }
+    .voices-carousel-track { display: flex; gap: 1rem; transition: transform 0.4s ease-in-out; will-change: transform; }
+    .voices-carousel-card { flex: 0 0 auto; }
+    .voices-carousel-card .voices-card { height: 100%; min-height: 0; }
+    @media (max-width: 1023px) {
+      .voices-carousel-card { width: 100%; }
+    }
+    @media (min-width: 1024px) {
+      .voices-carousel-card { width: calc((100% - 2rem) / 3); }
+    }
+    .voices-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .voices-carousel-arrow { width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 2px solid #94a3b8; background: #fff; color: #64748b; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .voices-carousel-arrow:hover { border-color: #002255; color: #002255; background: #eef2f6; }
+    .voices-carousel-arrow:disabled { opacity: 0.4; cursor: not-allowed; }
+    .voices-carousel-dots { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+    .voices-carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; border: none; padding: 0; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .voices-carousel-dot:hover { background: #94a3b8; }
+    .voices-carousel-dot.is-active { background: #002255; transform: scale(1.2); }
+  </style>
+</head>
+<body class="font-sans text-body antialiased bg-gray-50">
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-blue-600 tracking-widest uppercase">Subscription Instagram Service</span>
+          <h1 class="text-2xl font-bold text-body tracking-[-0.02em]">JEMIA</h1>
+        </div>
+
+        <nav class="hidden md:flex space-x-8 items-center">
+          <a href="#features" class="text-body hover:text-blue-600 font-medium transition">特徴</a>
+          <a href="#why-jemia" class="text-body hover:text-blue-600 font-medium transition">なぜJEMIA</a>
+          <a href="#services" class="text-body hover:text-blue-600 font-medium transition">プラン・料金</a>
+          <a href="#flow" class="text-body hover:text-blue-600 font-medium transition">導入の流れ</a>
+          <a href="#faq" class="text-body hover:text-blue-600 font-medium transition">よくある質問</a>
+          <a href="#case-study" class="text-body hover:text-blue-600 font-medium transition">キーワード実績</a>
+          <a href="#voices" class="text-body hover:text-blue-600 font-medium transition">お客様の声</a>
+          <a href="insta-strategy-guide.html" class="text-body hover:text-blue-600 font-medium transition">インスタ戦略ガイド</a>
+        </nav>
+
+        <div class="md:hidden"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="pt-20"></div>
+
+  <!-- Hero -->
+  <header class="relative bg-gradient-to-r from-[#000d22] to-[#002255] pb-12 sm:pb-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-10">
+        <div class="flex-1 min-w-0">
+          <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-[-0.02em] leading-[1.45]">
+            Instagram運用を、もっと自由に。もっとスマートに。
+          </h1>
+          <p class="mt-4 text-lg sm:text-xl text-white font-medium">
+            <span class="font-num text-2xl sm:text-3xl">月額 30,000円〜</span> の完全サブスク制。
+          </p>
+          <ul class="mt-6 space-y-4 text-base sm:text-lg text-white max-w-xl leading-relaxed list-none">
+            <li class="flex gap-3">
+              <span class="text-accent flex-shrink-0" aria-hidden="true">✦</span>
+              <span><strong class="font-bold">利用まで非常に簡単</strong><br>変更するのはプロフィール名だけ。JEMIAの技術で上位表示を強力にサポートします。</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-accent flex-shrink-0" aria-hidden="true">✦</span>
+              <span><strong class="font-bold">高い持続性</strong><br>6ヶ月以上の継続で検索アルゴリズムに深く定着。解約後も上位に残り続ける「積み上げ型」の施策です。</span>
+            </li>
+          </ul>
+          <a href="#services" class="mt-6 sm:mt-8 inline-flex items-center justify-center px-6 py-3.5 text-base font-bold text-white bg-accent hover:bg-accent-hover rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-[#000d22]">
+            プラン内容を詳しく見る
+          </a>
+        </div>
+        <div class="flex-shrink-0 flex justify-center lg:justify-end order-first lg:order-none">
+          <div class="illust-float w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[640px] lg:min-w-[560px]">
+            <img src="assets/hero-illustration-2.png" alt="スマートフォンと浮遊する3D要素：検索上位・AI分析で届ける運用" class="w-full h-auto object-contain drop-shadow-2xl" width="640" height="480" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 次のセクションへのスムーズな境目（波型） -->
+    <div class="absolute bottom-0 left-0 right-0 w-full leading-none pointer-events-none" aria-hidden="true">
+      <svg class="w-full h-12 sm:h-16 text-gray-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path fill="currentColor" d="M0,64 C300,120 600,0 900,64 C1050,96 1150,80 1200,64 L1200,120 L0,120 Z"></path>
+        <path fill="currentColor" opacity="0.6" d="M0,80 C400,40 800,100 1200,80 L1200,120 L0,120 Z"></path>
+      </svg>
+    </div>
+  </header>
+
+  <!-- JEMIAの特徴（3カード） -->
+  <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 mb-12 sm:mb-16 text-center">JEMIAの特徴</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+      <!-- カード1：月額固定で安心（ピンクのカード・緑チェック・安心感） -->
+      <article class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col overflow-visible">
+        <span class="feature-step-bg-num" aria-hidden="true">01</span>
+        <span class="feature-step-badge" aria-hidden="true">1</span>
+        <div class="flex justify-center items-center min-h-[72px] sm:min-h-[80px] mb-5 card-icon-wrap bg-white">
+          <img src="assets/image_15.png" alt="月額固定で安心：ピンクのカードと決済完了のチェック" class="w-full max-w-[90px] sm:max-w-[100px] h-auto object-contain object-center" width="100" height="80" />
+        </div>
+        <h3 class="text-lg font-bold text-primary-900 mb-2 text-center">月額固定で安心</h3>
+        <p class="text-sm text-slate-600 leading-relaxed text-center mt-auto">追加費用なしのサブスク型。<br>予算管理もスムーズ。</p>
+      </article>
+      <!-- カード2：自由な組み合わせ（スマホタップ・自分で選ぶ手触り感） -->
+      <article class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col overflow-visible">
+        <span class="feature-step-bg-num" aria-hidden="true">02</span>
+        <span class="feature-step-badge" aria-hidden="true">2</span>
+        <div class="flex justify-center items-center min-h-[72px] sm:min-h-[80px] mb-5 card-icon-wrap bg-white">
+          <img src="assets/image_14.png" alt="自由な組み合わせ：スマホで必要な機能を選ぶ" class="w-full max-w-[90px] sm:max-w-[100px] h-auto object-contain object-center" width="100" height="80" />
+        </div>
+        <h3 class="text-lg font-bold text-primary-900 mb-2 text-center">自由な組み合わせ</h3>
+        <p class="text-sm text-slate-600 leading-relaxed text-center mt-auto">必要な施策だけを選べるから、<br>無駄なコストを徹底カット。</p>
+      </article>
+      <!-- カード3：LINEで即相談（ヘッドセット付きチャットバブル・温かいサポート） -->
+      <article class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col overflow-visible">
+        <span class="feature-step-bg-num" aria-hidden="true">03</span>
+        <span class="feature-step-badge" aria-hidden="true">3</span>
+        <div class="flex justify-center items-center min-h-[72px] sm:min-h-[80px] mb-5 card-icon-wrap bg-white">
+          <img src="assets/image_13.png" alt="LINEで即相談：専任担当が温かくサポート" class="w-full max-w-[90px] sm:max-w-[100px] h-auto object-contain object-center jemia-feature-chat-tilt" width="100" height="80" />
+        </div>
+        <h3 class="text-lg font-bold text-primary-900 mb-2 text-center">LINEで即相談</h3>
+        <p class="text-sm text-slate-600 leading-relaxed text-center mt-auto">専任担当がLINEで徹底サポート。<br>いつでも気軽に相談可能。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- なぜJEMIAを使う必要があるのか？（戦略セクション） -->
+  <section id="why-jemia" class="bg-white border-t border-gray-200 py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 mb-10">なぜJEMIAを使う必要があるのか？</h2>
+
+      <div class="space-y-10 sm:space-y-12">
+        <!-- セクション1：戦略の必然性（1枚の大きなカードに集約・詳細ボタン廃止） -->
+        <div class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 overflow-hidden">
+          <!-- 1. キャッチコピーと導入（上部） -->
+          <div class="mb-8 sm:mb-10 pt-2 flex gap-4">
+            <div class="flex-shrink-0 w-1 rounded-full bg-blue-600 self-stretch min-h-[4rem]" aria-hidden="true"></div>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-baseline gap-3 mb-1">
+                <span class="font-num w-8 h-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center flex-shrink-0" aria-hidden="true">01</span>
+                <div>
+                  <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">INSTAGRAM STRATEGY</p>
+                  <h3 class="text-xl sm:text-2xl font-bold text-primary-900 mt-0.5" style="font-weight: 700;">戦略の必然性</h3>
+                </div>
+              </div>
+              <h4 class="text-base sm:text-lg font-bold text-body mb-3 mt-4">コンテンツを作って投稿するだけで終わっていませんか？</h4>
+              <p class="jemia-feature-lead rounded-lg bg-blue-50/50 p-4 text-sm sm:text-base text-body leading-relaxed">
+                2024年以降のInstagramでは、投稿の閲覧の<strong class="text-primary-800">50%以上</strong>がフォロワー以外からの流入です。<br>
+                その多くは「発見タブ」や「検索」から来ています。<br>
+                既存フォロワーだけに向けた発信では、アカウントの成長は伸びにくくなっています。
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. メインビジュアル：比較図解（実績画像主軸・PCは左右・スマホは上下） -->
+          <div class="flex flex-col lg:flex-row lg:items-stretch gap-6 sm:gap-8 mb-6">
+            <!-- 左：既存の運用（ホーム中心） -->
+            <div class="flex flex-col flex-1 rounded-xl bg-gray-100/80 border border-gray-200 p-5 sm:p-6">
+              <p class="text-xs font-bold text-slate-600 tracking-wide mb-3 uppercase">Before：フォロワー依存</p>
+              <div class="flex justify-center mb-4">
+                <img src="assets/HP-Before.png" alt="既存運用のインサイト（ホーム中心）" class="w-full max-w-[320px] h-auto rounded-lg object-cover shadow-sm" />
+              </div>
+              <span class="inline-block w-full text-center text-[10px] sm:text-xs font-medium text-slate-600 bg-slate-200/70 rounded-md px-2 py-1 mb-2" style="font-family: 'Noto Sans JP', sans-serif;">⚠️ 現状の課題</span>
+              <div class="rounded-lg bg-slate-50 p-3 sm:p-3.5 border border-slate-100">
+                <p class="text-xs sm:text-sm leading-relaxed flex items-start gap-1.5" style="font-family: 'Noto Sans JP', sans-serif;">
+                  <span class="text-slate-400 flex-shrink-0 mt-0.5" aria-hidden="true">×</span>
+                  <span><span class="text-slate-500">ホームからの閲覧が大半。</span><br><span class="font-bold text-body">新規への広がりが限定的。</span></span>
+                </p>
+              </div>
+            </div>
+
+            <!-- JEMIAのアクション（枠なし・矢印は1本・文字の下に配置） -->
+            <div class="strategy-bridge flex flex-col flex-shrink-0 items-center justify-center py-2 w-full max-w-[160px] lg:max-w-[140px] mx-auto lg:mx-0">
+              <div class="flex justify-center mb-2" aria-hidden="true">
+                <svg class="w-12 h-12 sm:w-14 sm:h-14" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 8h22c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4H22l-8 6V28H14c-2.2 0-4-1.8-4-4V12c0-2.2 1.8-4 4-4z" fill="#D8DDEB"/>
+                  <ellipse cx="22" cy="18" rx="1.8" ry="2" fill="white" opacity="0.9"/>
+                  <ellipse cx="28" cy="18" rx="1.8" ry="2" fill="white" opacity="0.9"/>
+                  <ellipse cx="34" cy="18" rx="1.8" ry="2" fill="white" opacity="0.9"/>
+                  <path d="M28 12h22c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4H36l-8 6V28H28c-2.2 0-4-1.8-4-4V16c0-2.2 1.8-4 4-4z" fill="#335588"/>
+                  <ellipse cx="36" cy="22" rx="1.8" ry="2" fill="white"/>
+                  <ellipse cx="42" cy="22" rx="1.8" ry="2" fill="white"/>
+                  <ellipse cx="48" cy="22" rx="1.8" ry="2" fill="white"/>
+                </svg>
+              </div>
+              <div class="w-full rounded-lg px-2 py-1.5 mb-2 text-center" style="background-color: #eef2f6;">
+                <span class="text-xs font-medium" style="color: #002255;">原因を分析・露出作業</span>
+              </div>
+              <div class="flex justify-center" aria-hidden="true">
+                <svg class="hidden lg:block w-12 h-6" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="strategy-connector-dashed" d="M2 12h38M42 8l4 4-4 4"/>
+                </svg>
+                <svg class="lg:hidden w-6 h-10 rotate-90" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="strategy-connector-dashed" d="M2 12h38M42 8l4 4-4 4"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- 右：JEMIAの運用（発見タブ中心）・Beforeとバランス -->
+            <div class="flex-1 relative rounded-xl bg-white border border-gray-200 p-5 sm:p-6">
+              <p class="text-xs font-bold text-blue-700 tracking-wide mb-3 uppercase">After：JEMIAの運用（発見タブ露出）</p>
+              <div class="flex justify-center mb-4">
+                <img src="assets/HP-After.png" alt="JEMIA運用のインサイト（発見タブ中心）" class="w-full max-w-[320px] h-auto rounded-lg object-cover shadow-sm" />
+              </div>
+              <span class="inline-block w-full text-center text-[10px] sm:text-xs font-medium rounded-md px-2 py-1 mb-2 bg-blue-100 text-blue-700" style="font-family: 'Noto Sans JP', sans-serif;">✨ JEMIA導入後</span>
+              <div class="rounded-lg bg-blue-50/50 p-3 sm:p-3.5 border border-blue-100/80">
+                <p class="text-xs sm:text-sm leading-relaxed" style="font-family: 'Noto Sans JP', sans-serif;">
+                  <span class="font-bold text-primary-800">発見タブからの流入が圧倒的。</span><br>フォロワー外の<strong class="text-blue-600 font-bold text-base sm:text-sm">数万人</strong>にリーチが拡大。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- まとめエリア（最短ルート・薄い青グラデ＋角丸） -->
+          <div class="rounded-2xl py-8 px-6 sm:py-8 sm:px-6 text-left overflow-hidden" style="background: linear-gradient(135deg, #eef2f6 0%, #dce5ed 50%, #e8edf0 100%);">
+            <div class="relative rounded-xl py-6 px-4 sm:px-6" style="background: rgba(255,255,255,0.6);">
+              <p class="relative text-base sm:text-lg font-bold text-primary-900 leading-relaxed text-center m-0" style="text-shadow: 0 0 20px rgba(255,255,255,0.8);">
+                JEMIAは、あなたの投稿を『見つけてもらう』ための<strong class="text-blue-700">最短ルート</strong>を提供します。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- セクション2：独自のブースト技術（グラフ＋3ステップ統合・スクロールで理解） -->
+        <div class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 overflow-hidden">
+          <!-- 1. キャッチコピーと導入（上部） -->
+          <div class="mb-8 sm:mb-10 pt-2 flex gap-4">
+            <div class="flex-shrink-0 w-1 rounded-full bg-blue-600 self-stretch min-h-[4rem]" aria-hidden="true"></div>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-baseline gap-3 mb-1">
+                <span class="font-num w-8 h-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center flex-shrink-0" aria-hidden="true">02</span>
+                <div>
+                  <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">BOOST TECHNOLOGY</p>
+                  <h3 class="text-xl sm:text-2xl font-bold text-primary-900 mt-0.5" style="font-weight: 700;">独自のブースト技術</h3>
+                </div>
+              </div>
+              <h4 class="text-base sm:text-lg font-bold text-body mb-3 mt-4">投稿直後の「初動」が、拡散の運命を決めます</h4>
+              <p class="jemia-feature-lead rounded-lg bg-blue-50/50 p-4 text-sm sm:text-base text-body leading-relaxed">
+                Instagramでは投稿後60分以内の反応を最重視しています。JEMIA独自のブースト技術により、投稿を『発見タブ』へと押し上げ、爆発的な拡散を引き起こします。
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. メインビジュアル：PC＝左グラフ／右3ステップ、スマホ＝上グラフ／下ステップ -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            <!-- 左：JEMIAブースト曲線（比較グラフ＋テクノロジー演出） -->
+            <div class="flex flex-col justify-center order-1">
+              <div class="relative rounded-xl bg-gray-50/80 border border-gray-100 p-4 sm:p-5 shadow-sm">
+                <svg class="relative w-full max-w-full h-auto" viewBox="0 0 420 240" aria-hidden="true" style="min-height: 260px;">
+                  <defs>
+                    <linearGradient id="jemia-boost-line" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#002255"/>
+                      <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                    <marker id="connector-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                      <path d="M0 0 L8 3 L0 6 Z" fill="#60a5fa"/>
+                    </marker>
+                  </defs>
+                  <!-- 軸・グリッド（グラフ描画域 40〜260、棒線はこの中のみ） -->
+                  <line x1="40" y1="160" x2="260" y2="160" stroke="#e2e8f0" stroke-width="1"/>
+                  <line x1="40" y1="30" x2="40" y2="160" stroke="#e2e8f0" stroke-width="1"/>
+                  <line x1="40" y1="120" x2="260" y2="120" stroke="#f1f5f9" stroke-width="0.8" stroke-dasharray="4 4"/>
+                  <line x1="40" y1="80" x2="260" y2="80" stroke="#f1f5f9" stroke-width="0.8" stroke-dasharray="4 4"/>
+                  <!-- 自力投稿：リーチがすぐ止まるグレー -->
+                  <path fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                    d="M 40 125 L 90 105 L 140 95 L 190 92 L 260 90"/>
+                  <!-- JEMIA運用：発見タブで右肩上がり・青太線（曲線が最後までクリア） -->
+                  <path fill="none" stroke="url(#jemia-boost-line)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+                    d="M 40 122 L 90 100 Q 150 70 200 55 Q 235 42 260 32"/>
+                  <!-- 引き出し線：青線の終点から右へ→上へ、棒線と被らないようグラフ外でバッジへ -->
+                  <path fill="none" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round"
+                    d="M 260 32 L 272 32 L 272 22" marker-end="url(#connector-arrow)"/>
+                  <!-- バッジ：グラフ右の余白に配置（棒線と重ならない） -->
+                  <g transform="translate(278, 8)">
+                    <rect x="0" y="0" width="130" height="24" rx="12" fill="#002255" opacity="0.95"/>
+                    <text x="65" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="white">Instagramからの高評価</text>
+                  </g>
+                </svg>
+                <div class="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+                  <span class="flex items-center gap-2"><span class="w-5 h-0.5 bg-[#94a3b8] rounded"></span>自力投稿（リーチがすぐ止まる）</span>
+                  <span class="flex items-center gap-2"><span class="w-5 h-0.5 bg-[#002255] rounded"></span>JEMIA運用（発見タブで右肩上がり）</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右：成功の3ステップ（縦タイムライン・カード形式） -->
+            <div class="flex flex-col gap-4 order-2">
+              <h4 class="text-sm font-bold text-primary-800 mb-1">拡散を引き起こす「成功の3ステップ」</h4>
+              <!-- STEP 01 -->
+              <div class="flex gap-4 rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <span class="flex-shrink-0 w-12 h-12 rounded-full bg-[#eef2f6] flex items-center justify-center shadow-sm" aria-hidden="true">
+                  <svg class="w-6 h-6 text-[#0ea5e9]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-bold text-[#0ea5e9] mb-1"><span class="font-num">STEP 01</span>: 投稿 & ブースト 🚀</p>
+                  <p class="text-sm text-body leading-relaxed">投稿直後、JEMIAの独自技術で『いいね・保存などのエンゲージ』を集中投下。AIに『反応速度が速い良質なコンテンツ』と認識させます。</p>
+                </div>
+              </div>
+              <!-- タイムラインつなぎ線 -->
+              <div class="hidden lg:block w-0.5 h-2 bg-gray-200 ml-6 -my-1" aria-hidden="true"></div>
+              <!-- STEP 02 -->
+              <div class="flex gap-4 rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <span class="flex-shrink-0 w-12 h-12 rounded-full bg-[#fce7f3] flex items-center justify-center shadow-sm" aria-hidden="true">
+                  <svg class="w-6 h-6 text-[#ec4899]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                  </svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-bold text-[#ec4899] mb-1"><span class="font-num">STEP 02</span>: 信頼スコア向上 🧠</p>
+                  <p class="text-sm text-body leading-relaxed">いいね代行によりターゲット層からの反応を誘発。『アカウント自体の信頼性も高い』と判断させ、優先順位を上げます。</p>
+                </div>
+              </div>
+              <div class="hidden lg:block w-0.5 h-2 bg-gray-200 ml-6 -my-1" aria-hidden="true"></div>
+              <!-- STEP 03 -->
+              <div class="flex gap-4 rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <span class="flex-shrink-0 w-12 h-12 rounded-full bg-[#eef2f6] flex items-center justify-center shadow-sm" aria-hidden="true">
+                  <svg class="w-6 h-6 text-[#0ea5e9]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                  </svg>
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-bold text-[#0ea5e9] mb-1"><span class="font-num">STEP 03</span>: 発見タブ掲載 🔍</p>
+                  <p class="text-sm text-body leading-relaxed">おすすめ・発見タブへ強制レコメンド。フォロワー外の数万〜数十万人に投稿が自動拡散されます。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- セクション3：検索キーワード独占（スマホ＋解説を1ビジュアルに統合） -->
+        <div class="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 overflow-hidden">
+          <!-- 1. キャッチコピーと導入（上部） -->
+          <div class="mb-8 sm:mb-10 pt-2 flex gap-4">
+            <div class="flex-shrink-0 w-1 rounded-full bg-blue-600 self-stretch min-h-[4rem]" aria-hidden="true"></div>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-baseline gap-3 mb-1">
+                <span class="font-num w-8 h-8 rounded-full bg-blue-600 text-white text-sm flex items-center justify-center flex-shrink-0" aria-hidden="true">03</span>
+                <div>
+                  <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">SEARCH POSITIONING</p>
+                  <h3 class="text-xl sm:text-2xl font-bold text-primary-900 mt-0.5" style="font-weight: 700;">検索キーワード独占</h3>
+                </div>
+              </div>
+              <h4 class="text-base sm:text-lg font-bold text-body mb-3 mt-4">比較検討される前に「選ばれる」ポジションを獲る</h4>
+              <p class="jemia-feature-lead rounded-lg bg-blue-50/50 p-4 text-sm sm:text-base text-body leading-relaxed">
+                潜在顧客が「地域名＋業種」で検索した際、あなたのアカウントを検索結果の上位へ。競合に流れる前に、真っ先に選ばれる状態を作ります。
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. メインビジュアル：左＝検索シミュレーション／右＝解説カード -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+            <!-- 左：検索キーワード独占ビジュアル（2台スマホ） -->
+            <div class="flex justify-center lg:justify-start order-1 relative">
+              <div class="w-full max-w-[400px] sm:max-w-[440px] rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+                <img src="assets/search-keyword-double-phone.png" alt="検索キーワード独占：ネイルサロン・新宿グルメなどキーワードで上位表示される様子" class="w-full h-auto object-contain align-bottom" width="640" height="480" />
+              </div>
+            </div>
+
+            <!-- 右：なぜキーワード検索で1位を獲るべきか（縦カード3つ） -->
+            <div class="flex flex-col gap-4 order-2">
+              <h4 class="text-sm font-bold text-primary-800 mb-1">なぜ「キーワード検索」で1位を獲るべきなのか？</h4>
+              <p class="text-sm text-body mb-3">成約率（CVR）は<span class="inline-block px-2 py-0.5 rounded bg-accent-muted text-accent font-bold">通常投稿の3〜5倍</span>に跳ね上がります。</p>
+              <!-- カード1：購買意欲の高いユーザー層 -->
+              <div class="rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <p class="text-sm font-bold text-body mb-2 flex items-center gap-1.5">購買意欲の高いユーザー層 <span aria-hidden="true">🎯</span></p>
+                <p class="text-sm text-body leading-relaxed">「キーワード検索」をするユーザーは「今すぐ店を探している」すでに訪問・購入する意欲の高い層です。</p>
+              </div>
+              <!-- カード2：比較される前の「独占」 -->
+              <div class="rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <p class="text-sm font-bold text-body mb-2 flex items-center gap-1.5">比較される前の「独占」 <span aria-hidden="true">🏆</span></p>
+                <p class="text-sm text-body leading-relaxed">検索結果の上位3つに入らなければ、存在しないのと同じ。JEMIAはプロフィールのSEO最適化と評価向上により、この「特等席」を確保します。</p>
+              </div>
+              <!-- カード3：信頼の証明 -->
+              <div class="rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <p class="text-sm font-bold text-body mb-2 flex items-center gap-1.5">信頼の証明 <span aria-hidden="true">⭐️</span></p>
+                <p class="text-sm text-body leading-relaxed">「検索で一番上に出る＝信頼できる店」という心理的効果（ハロー効果）により、予約への転換率が劇的に向上します。</p>
+              </div>
+              <button type="button" data-inquiry="アカウントが上位表示可能か相談する" class="mt-2 w-full sm:w-auto px-4 py-2.5 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition">アカウントが上位表示可能か相談する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- キーワード実績（4段マーキー・タグウォール） -->
+  <section id="case-study" class="py-20 bg-[#fffbf0] border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-primary-900 mb-4" style="font-family:'Noto Sans JP',sans-serif;">キーワード実績</h2>
+      <p class="text-center text-slate-600 text-sm sm:text-base mb-12 max-w-2xl mx-auto" style="font-family:'Noto Sans JP',sans-serif; font-weight: 500;">飲食、美容、不動産から海外集客まで。あらゆるジャンルで検索上位を独占しています。</p>
+
+      <!-- 4段マーキー：各段が逆方向に流れる -->
+      <div class="keyword-marquee-rows">
+        <div class="keyword-marquee-wrap" aria-hidden="true">
+          <div class="keyword-marquee-track">
+            <span class="kw-badge kw-badge-food">新宿ランチ</span>
+            <span class="kw-badge kw-badge-food">渋谷カフェ</span>
+            <span class="kw-badge kw-badge-food">大宮居酒屋</span>
+            <span class="kw-badge kw-badge-food">川越カフェ</span>
+            <span class="kw-badge kw-badge-travel">韓国旅行</span>
+            <span class="kw-badge kw-badge-travel">箱根温泉</span>
+            <span class="kw-badge kw-badge-travel">滋賀観光</span>
+            <span class="kw-badge kw-badge-travel">女子旅</span>
+            <span class="kw-badge kw-badge-food">新宿ランチ</span>
+            <span class="kw-badge kw-badge-food">渋谷カフェ</span>
+            <span class="kw-badge kw-badge-food">大宮居酒屋</span>
+            <span class="kw-badge kw-badge-food">川越カフェ</span>
+            <span class="kw-badge kw-badge-travel">韓国旅行</span>
+            <span class="kw-badge kw-badge-travel">箱根温泉</span>
+            <span class="kw-badge kw-badge-travel">滋賀観光</span>
+            <span class="kw-badge kw-badge-travel">女子旅</span>
+          </div>
+        </div>
+        <div class="keyword-marquee-wrap" data-direction="right" aria-hidden="true">
+          <div class="keyword-marquee-track">
+            <span class="kw-badge kw-badge-beauty">ハイトーンカラー</span>
+            <span class="kw-badge kw-badge-beauty">レイヤーカット</span>
+            <span class="kw-badge kw-badge-beauty">髪質改善</span>
+            <span class="kw-badge kw-badge-beauty">縮毛矯正</span>
+            <span class="kw-badge kw-badge-beauty">ブリーチカラー</span>
+            <span class="kw-badge kw-badge-beauty">ハッシュカット</span>
+            <span class="kw-badge kw-badge-beauty">横浜美容室</span>
+            <span class="kw-badge kw-badge-beauty">渋谷美容室</span>
+            <span class="kw-badge kw-badge-cosme">ブライダルエステ</span>
+            <span class="kw-badge kw-badge-cosme">小顔矯正</span>
+            <span class="kw-badge kw-badge-beauty">ハイトーンカラー</span>
+            <span class="kw-badge kw-badge-beauty">レイヤーカット</span>
+            <span class="kw-badge kw-badge-beauty">髪質改善</span>
+            <span class="kw-badge kw-badge-beauty">縮毛矯正</span>
+            <span class="kw-badge kw-badge-beauty">ブリーチカラー</span>
+            <span class="kw-badge kw-badge-beauty">ハッシュカット</span>
+            <span class="kw-badge kw-badge-beauty">横浜美容室</span>
+            <span class="kw-badge kw-badge-beauty">渋谷美容室</span>
+            <span class="kw-badge kw-badge-cosme">ブライダルエステ</span>
+            <span class="kw-badge kw-badge-cosme">小顔矯正</span>
+          </div>
+        </div>
+        <div class="keyword-marquee-wrap" aria-hidden="true">
+          <div class="keyword-marquee-track">
+            <span class="kw-badge kw-badge-cosme">アートメイク</span>
+            <span class="kw-badge kw-badge-cosme">プチプラコスメ</span>
+            <span class="kw-badge kw-badge-cosme">脂肪吸引</span>
+            <span class="kw-badge kw-badge-realestate">ルームツアー</span>
+            <span class="kw-badge kw-badge-realestate">韓国インテリア</span>
+            <span class="kw-badge kw-badge-realestate">収納アイデア</span>
+            <span class="kw-badge kw-badge-travel">沖縄ホテル</span>
+            <span class="kw-badge kw-badge-travel">三条ホテル</span>
+            <span class="kw-badge kw-badge-food">中目黒グルメ</span>
+            <span class="kw-badge kw-badge-food">札幌グルメ</span>
+            <span class="kw-badge kw-badge-food">すすきのカフェ</span>
+            <span class="kw-badge kw-badge-other">ブライダルフォト</span>
+            <span class="kw-badge kw-badge-other">フォトウエディング</span>
+            <span class="kw-badge kw-badge-cosme">アートメイク</span>
+            <span class="kw-badge kw-badge-cosme">プチプラコスメ</span>
+            <span class="kw-badge kw-badge-cosme">脂肪吸引</span>
+            <span class="kw-badge kw-badge-realestate">ルームツアー</span>
+            <span class="kw-badge kw-badge-realestate">韓国インテリア</span>
+            <span class="kw-badge kw-badge-realestate">収納アイデア</span>
+            <span class="kw-badge kw-badge-travel">沖縄ホテル</span>
+            <span class="kw-badge kw-badge-travel">三条ホテル</span>
+            <span class="kw-badge kw-badge-food">中目黒グルメ</span>
+            <span class="kw-badge kw-badge-food">札幌グルメ</span>
+            <span class="kw-badge kw-badge-food">すすきのカフェ</span>
+            <span class="kw-badge kw-badge-other">ブライダルフォト</span>
+            <span class="kw-badge kw-badge-other">フォトウエディング</span>
+          </div>
+        </div>
+        <div class="keyword-marquee-wrap" data-direction="right" aria-hidden="true">
+          <div class="keyword-marquee-track">
+            <span class="kw-badge kw-badge-fitness">韓国式足裏角質ケア</span>
+            <span class="kw-badge kw-badge-fitness">姿勢改善</span>
+            <span class="kw-badge kw-badge-fitness">婚約指輪</span>
+            <span class="kw-badge kw-badge-foreign">아트메이크</span>
+            <span class="kw-badge kw-badge-foreign">신주쿠맛집</span>
+            <span class="kw-badge kw-badge-foreign">시부탸 맛집</span>
+            <span class="kw-badge kw-badge-foreign">우메다맛집</span>
+            <span class="kw-badge kw-badge-fitness">韓国式足裏角質ケア</span>
+            <span class="kw-badge kw-badge-fitness">姿勢改善</span>
+            <span class="kw-badge kw-badge-fitness">婚約指輪</span>
+            <span class="kw-badge kw-badge-foreign">아트메이크</span>
+            <span class="kw-badge kw-badge-foreign">신주쿠맛집</span>
+            <span class="kw-badge kw-badge-foreign">시부탸 맛집</span>
+            <span class="kw-badge kw-badge-foreign">우메다맛집</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- サービスと料金 -->
+  <section id="services" class="border-y border-gray-200 py-20 relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 mb-2" style="font-family:'Noto Sans JP',sans-serif;">サービスと料金</h2>
+      <p class="text-sm text-slate-600 mb-8" style="font-size:0.9375rem;">各サービスの月額料金です。下記よりご希望のサービスの「仮申し込み」が可能です。まだ決済は発生しません。</p>
+
+      <!-- ナビ：あなたにぴったりのプランはどれ？ キャラクター吹き出し -->
+      <div class="services-plan-intro mb-10 p-5 sm:p-6 rounded-2xl bg-white/80 border border-gray-100 shadow-sm">
+        <h3 class="intro-title text-primary-900 mb-0" style="font-family:'Noto Sans JP',sans-serif;">あなたにぴったりのプランはどれ？💖</h3>
+        <div class="bubble-row">
+          <div class="bubble-item">
+            <div class="bubble-char girl" aria-hidden="true">👩</div>
+            <div class="bubble-wrap">
+              <div class="bubble-label">認知を広げたいな...🤔</div>
+              <div class="bubble-text pink"><strong>→ いいね代行</strong> がおすすめ！</div>
+            </div>
+          </div>
+          <div class="bubble-item">
+            <div class="bubble-char boy" aria-hidden="true">👨</div>
+            <div class="bubble-wrap">
+              <div class="bubble-label">投稿をバズらせたい！💥</div>
+              <div class="bubble-text blue"><strong>→ 発見表示ブースト</strong> で爆発拡散！</div>
+            </div>
+          </div>
+          <div class="bubble-item">
+            <div class="bubble-char bear" aria-hidden="true">🐻</div>
+            <div class="bubble-wrap">
+              <div class="bubble-label">資産を作りたいんだ🐻</div>
+              <div class="bubble-text yellow"><strong>→ 活性化セットプラン</strong> で最強アカウントへ！</div>
+            </div>
+          </div>
+          <div class="bubble-item">
+            <div class="bubble-char owl" aria-hidden="true">👑</div>
+            <div class="bubble-wrap">
+              <div class="bubble-label">自分だけの特別プランを作りたい！👑</div>
+              <div class="bubble-text gold"><strong>→ プレミアム・オーダーメイド</strong> でプロと完全カスタマイズ！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- サブスク透明性バッジ -->
+      <div class="flex flex-wrap gap-3 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-slate-700 shadow-sm">
+          <svg class="w-4 h-4 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          契約縛りなし
+        </span>
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-slate-700 shadow-sm">
+          <svg class="w-4 h-4 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
+          解約手数料0円
+        </span>
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-slate-700 shadow-sm">
+          <svg class="w-4 h-4 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          カード決済対応
+        </span>
+      </div>
+
+      <div class="space-y-10">
+        <!-- いいね代行＆ターゲットアプローチ（ソフトピンク） -->
+        <article class="subscr-plan-card plan-card-pink rounded-2xl p-6 sm:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06),0_10px_20px_-5px_rgba(0,0,0,0.05)] border overflow-hidden flex flex-col font-sans">
+          <div class="max-w-2xl flex flex-col flex-1 relative">
+            <!-- 1. メイン表示エリア -->
+            <div class="subscr-main-area">
+              <h3 class="text-xl sm:text-2xl font-bold text-primary-900 tracking-[-0.02em]" style="font-family:'Noto Sans JP',sans-serif;">いいね代行＆ターゲットアプローチ</h3>
+              <p class="mt-2 text-slate-600 leading-relaxed services-list-text">Instagramから『好かれる行動』を自動化。見込み顧客への認知を最大化します。</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                <span class="plan-badge-cute">✨ 月1回 活動レポート付</span>
+                <span class="plan-badge-cute">✨ 専任LINEサポート</span>
+                <span class="plan-badge-cute">✨ ターゲットストーリー閲覧</span>
+              </div>
+              <p class="mt-5 text-2xl sm:text-3xl font-num text-primary-800">月額 30,000円〜</p>
+              <p class="mt-0.5 text-xs text-slate-500">基本料金にオプションを追加した場合の目安です</p>
+            </div>
+
+            <!-- 2. 詳細展開エリア ＋ 詳しく見るボタン（右下） -->
+            <div class="detail-section mt-6">
+              <div class="detail-toggle-wrap flex justify-end">
+                <button type="button" class="detail-toggle-btn btn-detail-cute" aria-expanded="false" aria-controls="subscr-detail-panel" id="subscr-detail-toggle">
+                  詳しく見る <span class="arrow inline-block text-xs ml-0.5">▼</span>
+                </button>
+              </div>
+              <div class="detail-expand-content mt-0" id="subscr-detail-panel" role="region" aria-labelledby="subscr-detail-toggle">
+                <div class="detail-expand-inner">
+                  <div class="detail-expand-panel" style="background:#fff;border-color:#f8bbd9;">
+                    <div class="mb-4 p-4 rounded-lg bg-white border border-pink-100">
+                      <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">💡 このプランの目的</p>
+                      <p class="services-list-text text-slate-700 leading-relaxed">Instagramから『好かれる行動』を自動で行い、最適化アカウントを目指す。単なるフォロワー増ではなく、見込み顧客の獲得に繋げます。</p>
+                    </div>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-2">✨ 作業内容</p>
+                    <ul class="services-list-text text-slate-600 space-y-2 mb-4 list-none pl-0">
+                      <li class="flex items-start gap-2"><span class="text-pink-500 flex-shrink-0">✦</span>ターゲットに関連するハッシュタグ投稿へのフォロー・いいね・コメント</li>
+                      <li class="flex items-start gap-2"><span class="text-pink-500 flex-shrink-0">✦</span>ストーリー閲覧・いいね</li>
+                      <li class="flex items-start gap-2"><span class="text-pink-500 flex-shrink-0">✦</span>フォロー解除（希望制）</li>
+                    </ul>
+                    <p class="text-sm font-bold text-primary-900 mb-2">🔘 カスタマイズオプション</p>
+                    <div class="flex flex-col gap-4">
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" class="subscr-opt-check" data-add="5000" />
+                        <span class="text-sm">日本人フォロワー増加オプション</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" class="subscr-opt-check" data-add="5000" />
+                        <span class="text-sm">リール再生回数ブーストオプション</span>
+                      </label>
+                    </div>
+                    <p class="mt-2 text-xs text-slate-500">※チェックすると合計が反映されます（目安料金）</p>
+                    <p class="mt-2 text-sm text-primary-800 font-medium">現在の目安: 月額 <span id="subscr-plan-total">30,000</span>円〜</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. 下部固定アクション（CTA） -->
+            <div class="mt-8 pt-6 border-t border-pink-200 flex-shrink-0">
+              <button type="button" data-inquiry="いいね代行" class="subscr-cta w-full sm:w-auto flex justify-center items-center px-6 py-3.5 bg-primary-700 text-white text-sm font-bold rounded-lg hover:bg-primary-800 transition shadow-md hover:shadow-lg">
+                この内容で相談・仮申し込みする
+              </button>
+            </div>
+          </div>
+        </article>
+        <script>
+        (function(){
+          var card = document.querySelector('.subscr-plan-card');
+          if (!card) return;
+          var panel = document.getElementById('subscr-detail-panel');
+          var toggle = document.getElementById('subscr-detail-toggle');
+          if (toggle && panel) {
+            toggle.addEventListener('click', function(){
+              var open = panel.classList.toggle('is-open');
+              toggle.setAttribute('aria-expanded', open);
+            });
+          }
+          var base = 30000;
+          var totalEl = document.getElementById('subscr-plan-total');
+          var checks = card ? card.querySelectorAll('.subscr-opt-check') : [];
+          function updateTotal(){
+            var add = 0;
+            for (var i = 0; i < checks.length; i++) { if(checks[i].checked) add += parseInt(checks[i].getAttribute('data-add')||0,10); }
+            if (totalEl) totalEl.textContent = (base + add).toLocaleString();
+          }
+          for (var j = 0; j < checks.length; j++) { checks[j].addEventListener('change', updateTotal); }
+          updateTotal();
+        })();
+        </script>
+
+        <!-- おすすめ発見表示（ソフトブルー） -->
+        <article class="subscr-plan-card plan-card-blue rounded-2xl p-6 sm:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06),0_10px_20px_-5px_rgba(0,0,0,0.05)] border overflow-hidden flex flex-col font-sans">
+          <div class="max-w-2xl flex flex-col flex-1 relative">
+            <div class="subscr-main-area">
+              <h3 class="text-xl sm:text-2xl font-bold text-primary-900 tracking-[-0.02em]" style="font-family:'Noto Sans JP',sans-serif;">おすすめ発見表示</h3>
+              <p class="mt-2 text-slate-600 leading-relaxed services-list-text">JEMIA保有の数千アカウントを活用。検索画面をあなたの投稿でジャックします。</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                <span class="plan-badge-cute">✨ 複数ハッシュタグ対応</span>
+                <span class="plan-badge-cute">✨ 外国語コンテンツ対応</span>
+                <span class="plan-badge-cute">✨ タグ付けPR込</span>
+              </div>
+              <p class="mt-5 text-2xl sm:text-3xl font-num font-bold text-primary-800">月額 50,000円〜80,000円</p>
+              <p class="mt-0.5 text-xs text-slate-500">キーワード・構成により変動します</p>
+            </div>
+
+            <div class="detail-section mt-6">
+              <div class="detail-toggle-wrap flex justify-end">
+                <button type="button" class="detail-toggle-btn btn-detail-cute" aria-expanded="false" aria-controls="boost-detail-panel" id="boost-detail-toggle">
+                  詳しく見る <span class="arrow inline-block text-xs ml-0.5">▼</span>
+                </button>
+              </div>
+              <div class="detail-expand-content mt-0" id="boost-detail-panel" role="region" aria-labelledby="boost-detail-toggle">
+                <div class="detail-expand-inner">
+                  <div class="detail-expand-panel" style="background:#fff;border-color:#90caf9;">
+                    <div class="mb-4 p-4 rounded-lg bg-white border border-blue-100">
+                      <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">💡 このプランの目的</p>
+                      <p class="services-list-text text-slate-700 leading-relaxed">素材を提出いただくだけで、JEMIAの最適化済みアカウント群から複数回投稿を実施。個人アカウント1つでは不可能な『面』での露出を実現します。</p>
+                    </div>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-2">✨ 作業内容・特徴</p>
+                    <ul class="services-list-text text-slate-600 space-y-2 mb-4 list-none pl-0">
+                      <li class="flex items-start gap-2"><span class="text-blue-600 flex-shrink-0">✦</span>数千の管理アカウントから最適なものをセレクトして投稿</li>
+                      <li class="flex items-start gap-2"><span class="text-blue-600 flex-shrink-0">✦</span>キャプションは自由設定。アルゴリズムに合わせご提案</li>
+                      <li class="flex items-start gap-2"><span class="text-blue-600 flex-shrink-0">✦</span>外国語コンテンツにも完全対応</li>
+                    </ul>
+                    <p class="text-sm font-bold text-primary-900 mb-2">🔘 カスタマイズオプション</p>
+                    <div class="flex flex-col gap-4">
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">投稿頻度アップオプション</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">複数キーワード同時ブースト</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">インバウンド（外国語）特化構成</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-blue-200 flex-shrink-0">
+              <button type="button" data-inquiry="おすすめ発見表示" class="subscr-cta w-full sm:w-auto flex justify-center items-center px-6 py-3.5 bg-primary-700 text-white text-sm font-bold rounded-lg hover:bg-primary-800 transition shadow-md hover:shadow-lg">
+                この内容で相談・仮申し込みする
+              </button>
+            </div>
+          </div>
+        </article>
+        <script>
+        (function(){
+          var panel = document.getElementById('boost-detail-panel');
+          var toggle = document.getElementById('boost-detail-toggle');
+          if (toggle && panel) {
+            toggle.addEventListener('click', function(){
+              var open = panel.classList.toggle('is-open');
+              toggle.setAttribute('aria-expanded', open);
+            });
+          }
+        })();
+        </script>
+
+        <!-- アカウント活性化＋発見表示ブースト（ソフトイエロー） -->
+        <article class="subscr-plan-card plan-card-yellow rounded-2xl p-6 sm:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06),0_10px_20px_-5px_rgba(0,0,0,0.05)] border overflow-hidden flex flex-col font-sans">
+          <div class="max-w-2xl flex flex-col flex-1 relative">
+            <div class="subscr-main-area">
+              <h3 class="text-xl sm:text-2xl font-bold text-primary-900 tracking-[-0.02em]" style="font-family:'Noto Sans JP',sans-serif;">アカウント活性化 ＋ 発見表示内の文言</h3>
+              <p class="mt-2 text-slate-600 leading-relaxed services-list-text">解約後も資産として残る。あなたのアカウントを『勝手に売れる』最強の状態へ育成します。</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                <span class="plan-badge-cute">🔥 人気No.1セットプラン</span>
+                <span class="plan-badge-cute">✨ 資産構築型</span>
+                <span class="plan-badge-cute">✨ 全行程AI最適化</span>
+              </div>
+              <p class="mt-5 text-2xl sm:text-3xl font-num font-bold text-primary-800">月額 50,000円〜150,000円</p>
+              <p class="mt-0.5 text-xs text-slate-500">※キーワード強度により変動。詳細は要相談</p>
+            </div>
+
+            <div class="detail-section mt-6">
+              <div class="detail-toggle-wrap flex justify-end">
+                <button type="button" class="detail-toggle-btn btn-detail-cute" aria-expanded="false" aria-controls="setplan-detail-panel" id="setplan-detail-toggle">
+                  詳しく見る <span class="arrow inline-block text-xs ml-0.5">▼</span>
+                </button>
+              </div>
+              <div class="detail-expand-content mt-0" id="setplan-detail-panel" role="region" aria-labelledby="setplan-detail-toggle">
+                <div class="detail-expand-inner">
+                  <div class="detail-expand-panel" style="background:#fff;border-color:#ffc9b3;">
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">コンセプト</p>
+                    <p class="services-list-text text-slate-600 leading-relaxed mb-4">いいね・ターゲットアプローチでアカウントを耕し、土壌が整ったところでJEMIAのブースト技術を投入。お客様自身の投稿が『発見タブ』へ自走して掲載される状態を目指します。</p>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">✨ 理想的なスケジュール（育成ロードマップ）</p>
+                    <ul class="services-list-text text-slate-600 space-y-1 mb-4">
+                      <li class="flex items-start gap-2"><span class="text-accent mt-0.5">✦</span>ステップ1（1〜2ヶ月目）：アカウント活性化・ターゲットへの認知拡大。</li>
+                      <li class="flex items-start gap-2"><span class="text-accent mt-0.5">✦</span>ステップ2（3ヶ月目〜）：ブースト機能を併用し、爆発的な露出を狙う。</li>
+                    </ul>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">このプランの強み</p>
+                    <p class="services-list-text text-slate-600 leading-relaxed mb-4">JEMIAの技術で育てたアカウントは、利用後も引き続き高い拡散力を維持します。一時的な広告ではなく、中長期的な『資産』を作りたい方に最適です。</p>
+                    <p class="text-sm font-bold text-primary-900 mb-3">🔘 カスタマイズ・オプション</p>
+                    <div class="flex flex-col gap-4">
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">月次活動量レポート</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">投稿内容（クリエイティブ）添削アドバイス</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">複数アカウント</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-accent/30 flex-shrink-0">
+              <button type="button" data-inquiry="アカウント活性化＋発見表示ブースト" class="subscr-cta w-full sm:w-auto flex justify-center items-center px-6 py-3.5 bg-primary-700 text-white text-sm font-bold rounded-lg hover:bg-primary-800 transition shadow-md hover:shadow-lg">
+                この内容で相談・仮申し込みする
+              </button>
+            </div>
+          </div>
+        </article>
+        <script>
+        (function(){
+          var panel = document.getElementById('setplan-detail-panel');
+          var toggle = document.getElementById('setplan-detail-toggle');
+          if (toggle && panel) {
+            toggle.addEventListener('click', function(){
+              var open = panel.classList.toggle('is-open');
+              toggle.setAttribute('aria-expanded', open);
+            });
+          }
+        })();
+        </script>
+
+        <!-- アカウントリスト上位表示（ソフトパープル） -->
+        <article class="subscr-plan-card plan-card-purple rounded-2xl p-6 sm:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06),0_10px_20px_-5px_rgba(0,0,0,0.05)] border overflow-hidden flex flex-col font-sans">
+          <div class="max-w-2xl flex flex-col flex-1 relative">
+            <div class="subscr-main-area">
+              <h3 class="text-xl sm:text-2xl font-bold text-primary-900 tracking-[-0.02em]" style="font-family:'Noto Sans JP',sans-serif;">アカウントリスト上位表示</h3>
+              <p class="mt-2 text-slate-600 leading-relaxed services-list-text">プロフィール名を変えるだけ。検索結果のトップを独占し、指名検索を確実にキャッチ。</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                <span class="plan-badge-cute">✨ プロフィール変更のみ</span>
+                <span class="plan-badge-cute">✨ フィード検索対応</span>
+                <span class="plan-badge-cute">✨ 専任LINEサポート</span>
+              </div>
+              <p class="mt-5 text-2xl sm:text-3xl font-num text-primary-800">月額 30,000円</p>
+            </div>
+
+            <div class="detail-section mt-6">
+              <div class="detail-toggle-wrap flex justify-end">
+                <button type="button" class="detail-toggle-btn btn-detail-cute" aria-expanded="false" aria-controls="listtop-detail-panel" id="listtop-detail-toggle">
+                  詳しく見る <span class="arrow inline-block text-xs ml-0.5">▼</span>
+                </button>
+              </div>
+              <div class="detail-expand-content mt-0" id="listtop-detail-panel" role="region" aria-labelledby="listtop-detail-toggle">
+                <div class="detail-expand-inner">
+                  <div class="detail-expand-panel" style="background:#fff;border-color:#e1bee7;">
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">サービス概要</p>
+                    <ul class="services-list-text text-slate-600 leading-relaxed mb-4 space-y-1 list-none">
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5 flex-shrink-0">✦</span><span><strong class="text-primary-800">設定が非常に簡単</strong><br>変更するのはプロフィール名だけ。JEMIAの技術で裏側から上位表示を強力にサポートします。</span></li>
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5 flex-shrink-0">✦</span><span><strong class="text-primary-800">高い持続性</strong><br>6ヶ月以上の継続で検索アルゴリズムに深く定着。解約後も上位に残り続ける「積み上げ型」の施策です。</span></li>
+                    </ul>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">✨ ここがポイント！</p>
+                    <ul class="services-list-text text-slate-600 space-y-1 mb-4">
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5 flex-shrink-0">✦</span><span><strong class="text-primary-800">設定が非常に簡単</strong><br>変更するのはプロフィール名だけ。JEMIAの技術で裏側から上位表示を強力にサポートします。</span></li>
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5 flex-shrink-0">✦</span><span><strong class="text-primary-800">高い持続性</strong><br>6ヶ月以上の継続で検索アルゴリズムに深く定着。解約後も上位に残り続ける「積み上げ型」の施策です。</span></li>
+                    </ul>
+                    <p class="text-xs font-bold text-primary-800 uppercase tracking-wide mb-1">こんな方におすすめ</p>
+                    <ul class="services-list-text text-slate-600 space-y-1 mb-4">
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5">✦</span>特定のジャンルや地域名で「まずは自分を見つけてほしい」方</li>
+                      <li class="flex items-start gap-2"><span class="text-purple-600 mt-0.5">✦</span>複雑な運用はせず、入り口だけを確実に固めたい方</li>
+                    </ul>
+                    <p class="text-sm font-bold text-primary-900 mb-3">🔘 カスタマイズ・オプション</p>
+                    <div class="flex flex-col gap-4">
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">競合キーワード調査</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">プロフィール最適化アドバイス</span>
+                      </label>
+                      <label class="subscr-opt subscr-opt-cute gap-2 cursor-pointer">
+                        <input type="checkbox" />
+                        <span class="text-sm">6ヶ月継続コミットプラン（推奨）</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-purple-200 flex-shrink-0">
+              <button type="button" data-inquiry="アカウントリスト上位表示" class="subscr-cta w-full sm:w-auto flex justify-center items-center px-6 py-3.5 bg-primary-700 text-white text-sm font-bold rounded-lg hover:bg-primary-800 transition shadow-md hover:shadow-lg">
+                この内容で相談・仮申し込みする
+              </button>
+            </div>
+          </div>
+        </article>
+        <script>
+        (function(){
+          var panel = document.getElementById('listtop-detail-panel');
+          var toggle = document.getElementById('listtop-detail-toggle');
+          if (toggle && panel) {
+            toggle.addEventListener('click', function(){
+              var open = panel.classList.toggle('is-open');
+              toggle.setAttribute('aria-expanded', open);
+            });
+          }
+        })();
+        </script>
+
+        <!-- プレミアム・オーダーメイドプラン（最高位・華やかデザイン） -->
+        <article class="premium-plan-card rounded-2xl p-6 sm:p-8 overflow-hidden flex flex-col font-sans">
+          <div class="max-w-2xl flex flex-col flex-1">
+            <h3 class="text-xl sm:text-2xl font-bold text-primary-900 tracking-[-0.02em]" style="font-family:'Noto Sans JP',sans-serif;">プレミアム・オーダーメイド</h3>
+            <p class="mt-2 text-sm sm:text-base text-slate-600 leading-relaxed">予算も内容も自由自在。あなた専用のJEMIAチームを構築します。</p>
+            <!-- メリットバッジ（キラキラアイコン付き） -->
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#fff9db] border border-[#f0e6c8] text-[#b8860b]">✨ 予算に合わせて調整可</span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#fff9db] border border-[#f0e6c8] text-[#b8860b]">✨ プロの徹底伴走</span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#fff9db] border border-[#f0e6c8] text-[#b8860b]">✨ 内容の組み合わせ自由</span>
+            </div>
+            <!-- 目的ブロック -->
+            <div class="mt-6 p-4 rounded-xl bg-[#fffbf0] border border-[#f0e6c8]">
+              <p class="text-sm sm:text-base text-slate-700 leading-relaxed" style="font-family:'Noto Sans JP',sans-serif;">💡 あなたの目標に合わせて、無駄なく最短ルートを設計します💖</p>
+            </div>
+            <!-- パーツセレクト（グリッド・かわいいアイコン付き） -->
+            <p class="mt-5 text-xs font-bold text-primary-800 uppercase tracking-wide mb-2">選べるパーツ</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-2.5 px-3 py-2.5 bg-white border border-[#f0e6c8] rounded-xl text-sm text-slate-700 shadow-sm">
+                <span class="text-xl flex-shrink-0" aria-hidden="true">🌐</span>
+                <span>インバウンド対応（世界へ発信！）</span>
+              </div>
+              <div class="flex items-center gap-2.5 px-3 py-2.5 bg-white border border-[#f0e6c8] rounded-xl text-sm text-slate-700 shadow-sm">
+                <span class="text-xl flex-shrink-0" aria-hidden="true">📍</span>
+                <span>特定エリア特化（地元で1番に！）</span>
+              </div>
+              <div class="flex items-center gap-2.5 px-3 py-2.5 bg-white border border-[#f0e6c8] rounded-xl text-sm text-slate-700 shadow-sm">
+                <span class="text-xl flex-shrink-0" aria-hidden="true">✍️</span>
+                <span>クリエイティブ制作（丸ごとお任せ！）</span>
+              </div>
+              <div class="flex items-center gap-2.5 px-3 py-2.5 bg-white border border-[#f0e6c8] rounded-xl text-sm text-slate-700 shadow-sm">
+                <span class="text-xl flex-shrink-0" aria-hidden="true">📊</span>
+                <span>徹底分析レポート（弱点ゼロへ！）</span>
+              </div>
+            </div>
+            <!-- CTA（やや大きめ＋キラキラパーティクル） -->
+            <div class="mt-8 pt-6 border-t border-[#f0e6c8] flex-shrink-0">
+              <div class="btn-premium-cta-wrap">
+                <span class="particle" aria-hidden="true">✨</span>
+                <span class="particle" aria-hidden="true">✨</span>
+                <span class="particle" aria-hidden="true">✨</span>
+                <span class="particle" aria-hidden="true">✨</span>
+                <span class="particle" aria-hidden="true">✨</span>
+                <span class="particle" aria-hidden="true">✨</span>
+                <button type="button" data-inquiry="プレミアム・オーダーメイド（内容セレクト・料金交渉）" class="btn-premium-cta w-full sm:w-auto flex justify-center items-center px-7 py-4 bg-primary-700 text-white text-base font-bold rounded-lg hover:bg-primary-800 transition shadow-md hover:shadow-lg">
+                  内容をセレクト・料金交渉をする✨
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 導入の流れ（横並び） -->
+  <section id="flow" class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-primary-900 mb-10 sm:mb-12">導入の流れ</h2>
+
+      <div class="flex flex-col md:flex-row gap-8 md:gap-4 lg:gap-6 items-stretch">
+        <!-- STEP 01 -->
+        <div class="flow-horizontal-step flex-1 min-w-0 flex flex-col items-center">
+          <div class="relative mb-4 w-full flex justify-center">
+            <span class="flow-step-badge-3d font-num flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl text-white text-sm sm:text-base" aria-hidden="true">01</span>
+            <span class="flow-start-ribbon" aria-hidden="true">最短即日START！</span>
+          </div>
+          <div class="flow-card w-full flex-1 flex flex-col p-4 sm:p-5">
+            <h3 class="font-bold text-base sm:text-lg text-primary-900 mb-2">仮申し込み</h3>
+            <p class="text-sm text-slate-600 leading-relaxed flex-1">まずは仮申し込み。ご希望のサービスを選択し、必要事項を記入しお申込みください。</p>
+          </div>
+        </div>
+
+        <!-- STEP 02 -->
+        <div class="flow-horizontal-step flex-1 min-w-0 flex flex-col items-center">
+          <div class="mb-4">
+            <span class="flow-step-badge-3d font-num flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl text-white text-sm sm:text-base" aria-hidden="true">02</span>
+          </div>
+          <div class="flow-card w-full flex-1 flex flex-col p-4 sm:p-5">
+            <h3 class="font-bold text-base sm:text-lg text-primary-900 mb-2">キーワードご相談・発注書送付</h3>
+            <p class="text-sm text-slate-600 leading-relaxed flex-1">現在のアカウント状況を確認し、キーワードをご選定・ご相談。チャット・メールにてご相談をいたします。</p>
+          </div>
+        </div>
+
+        <!-- STEP 03 -->
+        <div class="flow-horizontal-step flex-1 min-w-0 flex flex-col items-center">
+          <div class="mb-4">
+            <span class="flow-step-badge-3d font-num flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl text-white text-sm sm:text-base" aria-hidden="true">03</span>
+          </div>
+          <div class="flow-card w-full flex-1 flex flex-col p-4 sm:p-5">
+            <h3 class="font-bold text-base sm:text-lg text-primary-900 mb-2">決済・スタート</h3>
+            <p class="text-sm text-slate-600 leading-relaxed flex-1">確定後、サブスクリプション決済。契約縛りがないため<span class="text-accent font-bold">即日開始可能です</span>。開始日時はご希望によって変更可能。面倒な初期設定はすべて弊社にお任せください。</p>
+          </div>
+        </div>
+
+        <!-- STEP 04 -->
+        <div class="flow-horizontal-step flex-1 min-w-0 flex flex-col items-center">
+          <div class="mb-4">
+            <span class="flow-step-badge-3d font-num flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl text-white text-sm sm:text-base" aria-hidden="true">04</span>
+          </div>
+          <div class="flow-card w-full flex-1 flex flex-col p-4 sm:p-5">
+            <h3 class="font-bold text-base sm:text-lg text-primary-900 mb-2">更新・解約</h3>
+            <p class="text-sm text-slate-600 leading-relaxed flex-1">自動更新制。解約の際はチャット・メールにて次回更新日の10日前までにお申し込みで簡単手続き！</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 導入事例（投稿ブースト・フォロワー増加） -->
+  <section id="intro-cases" class="py-20 bg-white border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-primary-900 mb-4">導入事例</h2>
+      <p class="text-center text-slate-600 text-sm sm:text-base mb-12 max-w-2xl mx-auto">リーチ拡大とフォロワー増加の実績例です。</p>
+
+      <div class="space-y-12 sm:space-y-16">
+        <!-- 1. 飲食店：投稿ブーストの実績 -->
+        <article class="bg-white rounded-2xl border-2 border-blue-100 overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+          <div class="p-6 sm:p-8 lg:flex lg:items-center lg:gap-10">
+            <div class="lg:w-1/2 mb-6 lg:mb-0">
+              <span class="inline-block px-3 py-1 text-xs font-bold bg-blue-600 text-white rounded-full mb-4">飲食店</span>
+              <h3 class="text-xl font-bold text-primary-900 mb-3">投稿ブーストの実績</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">発見タブ掲載により、1投稿のリーチが通常時の15倍に。多くの新規客に届くようになりました。</p>
+              <div class="flex flex-wrap gap-4 items-baseline">
+                <div>
+                  <span class="font-num block text-3xl sm:text-4xl text-blue-600">320,000</span>
+                  <span class="text-sm text-slate-600 font-medium">リーチ（1投稿）</span>
+                </div>
+                <div class="pl-4 border-l-2 border-blue-200">
+                  <span class="font-num block text-2xl sm:text-3xl text-primary-900">15倍</span>
+                  <span class="text-sm text-slate-600 font-medium">通常時比</span>
+                </div>
+              </div>
+            </div>
+            <div class="lg:w-1/2 flex justify-center">
+              <div class="w-full max-w-sm">
+                <p class="text-xs font-bold text-slate-500 mb-2">リーチ数の推移（イメージ）</p>
+                <svg class="w-full h-44 sm:h-52" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="reach-line-intro" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#002255"/>
+                      <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="40" y1="160" x2="300" y2="160" stroke="#e2e8f0" stroke-width="1"/>
+                  <line x1="40" y1="20" x2="40" y2="160" stroke="#e2e8f0" stroke-width="1"/>
+                  <path fill="none" stroke="url(#reach-line-intro)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                    d="M 40 140 L 90 120 L 140 85 L 190 55 L 240 35 L 290 22"/>
+                  <circle cx="290" cy="22" r="6" fill="#002255"/>
+                  <text x="290" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#002255">32万</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. 美容サロン：フォロワー増加の実績 -->
+        <article class="bg-white rounded-2xl border-2 border-blue-100 overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+          <div class="p-6 sm:p-8 lg:flex lg:items-center lg:gap-10">
+            <div class="lg:w-1/2 order-2 lg:order-1 flex justify-center">
+              <div class="w-full max-w-sm">
+                <p class="text-xs font-bold text-slate-500 mb-2">フォロワー数推移（3ヶ月）</p>
+                <div class="flex items-end gap-3 h-40 sm:h-48">
+                  <div class="flex-1 flex flex-col items-center">
+                    <span class="text-xs text-slate-500 mb-1">導入前</span>
+                    <div class="w-full bg-gray-200 rounded-t h-16 flex items-end justify-center pb-1">
+                      <span class="font-num text-lg text-slate-600">800</span>
+                    </div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center">
+                    <span class="text-xs text-slate-500 mb-1">1ヶ月</span>
+                    <div class="w-full bg-blue-200 rounded-t h-20 flex items-end justify-center pb-1">
+                      <span class="font-num text-lg text-blue-700">950</span>
+                    </div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center">
+                    <span class="text-xs text-slate-500 mb-1">2ヶ月</span>
+                    <div class="w-full bg-blue-300 rounded-t h-28 flex items-end justify-center pb-1">
+                      <span class="font-num text-lg text-blue-800">1,050</span>
+                    </div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center">
+                    <span class="text-xs text-slate-500 mb-1">3ヶ月</span>
+                    <div class="w-full bg-blue-600 rounded-t h-40 flex items-end justify-center pb-1">
+                      <span class="font-num text-lg text-white">2,000</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-center text-xs text-slate-500 mt-2">+1,200人増加</p>
+              </div>
+            </div>
+            <div class="lg:w-1/2 order-1 lg:order-2 mb-6 lg:mb-0">
+              <span class="inline-block px-3 py-1 text-xs font-bold bg-blue-600 text-white rounded-full mb-4">美容サロン</span>
+              <h3 class="text-xl font-bold text-primary-900 mb-3">フォロワー増加の実績</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">アカウント活性化代行により、3ヶ月でフォロワーが大きく増加。来店予約率も向上しました。</p>
+              <div class="flex flex-wrap gap-4 items-baseline">
+                <div>
+                  <span class="font-num block text-3xl sm:text-4xl text-blue-600">+1,200</span>
+                  <span class="text-sm text-slate-600 font-medium">フォロワー増（3ヶ月）</span>
+                </div>
+                <div class="pl-4 border-l-2 border-blue-200">
+                  <span class="font-num block text-2xl sm:text-3xl text-primary-900">2.8倍</span>
+                  <span class="text-sm text-slate-600 font-medium">来店予約率</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 実際に利用した声 -->
+  <section id="voices" class="bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 class="text-xl sm:text-2xl font-bold text-center mb-10 sm:mb-12">
+        <span class="text-[#22c55e]">実際に利用した声</span>
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-10">
+        <!-- 左：総合評価サマリー（3割） -->
+        <div class="lg:col-span-3">
+          <div id="voices-rating-block" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-24">
+            <p class="text-3xl sm:text-4xl font-bold text-body rating-score-text">4.88 <span class="text-xl font-normal text-slate-500">/ 5</span></p>
+            <div class="flex gap-0.5 mt-2 rating-stars-gold" aria-hidden="true">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <p class="mt-2 text-sm font-medium rating-count-green">20件のレビュー</p>
+            <!-- スコア分布（横バー：5=17件・4=3件・3/2/1=0件） -->
+            <div class="mt-6 rating-bars-wrap space-y-0">
+              <div class="rating-bar-row">
+                <span class="rating-bar-num rating-label-num">5</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill rating-bar-fill-5" data-width="100" role="presentation"></div></div>
+              </div>
+              <div class="rating-bar-row">
+                <span class="rating-bar-num rating-label-num">4</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill rating-bar-fill-4" data-width="20" role="presentation"></div></div>
+              </div>
+              <div class="rating-bar-row">
+                <span class="rating-bar-num rating-label-num">3</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" data-width="0" role="presentation"></div></div>
+              </div>
+              <div class="rating-bar-row">
+                <span class="rating-bar-num rating-label-num">2</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" data-width="0" role="presentation"></div></div>
+              </div>
+              <div class="rating-bar-row">
+                <span class="rating-bar-num rating-label-num">1</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" data-width="0" role="presentation"></div></div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 text-center mt-3 rating-label-num">星の数</p>
+          </div>
+        </div>
+        <!-- 右：レビューカルーセル（7割） -->
+        <div class="lg:col-span-7">
+          <div id="voices-carousel" class="voices-carousel-outer">
+            <div id="voices-carousel-track" class="voices-carousel-track" role="list">
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">都内・飲食店店長様</span>
+                    <span class="text-xs text-slate-500">（導入3ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">2日前</p>
+                  <p class="text-sm text-body leading-relaxed">「新宿 居酒屋」で検索1位になり、週末の予約がインスタ経由で埋まるようになりました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">フリーランス・クリエイター様</span>
+                    <span class="text-xs text-slate-500">（導入半年）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">5日前</p>
+                  <p class="text-sm text-body leading-relaxed">投稿直後のブーストのおかげで、初めてリールが10万再生を超えてフォロワーが急増しました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">個人ブランディング中のお客様</span>
+                    <span class="text-xs text-slate-500">（導入2ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1週間前</p>
+                  <p class="text-sm text-body leading-relaxed">以前はフォロワーにしか届きませんでしたが、今は発見タブからの流入が8割を超えています。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">ECサイト運営担当者様</span>
+                    <span class="text-xs text-slate-500">（リピーター様）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1週間前</p>
+                  <p class="text-sm text-body leading-relaxed">いいね代行のおかげでターゲット層と繋がれるようになり、DMでの相談が絶えません。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">ECサイト運営担当者様</span>
+                    <span class="text-xs text-slate-500">（導入4ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">2週間前</p>
+                  <p class="text-sm text-body leading-relaxed">「韓国ファッション」のタグで上位を独占。自社サイトへのクリック数が導入前の4倍です。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">美容サロン経営者様</span>
+                    <span class="text-xs text-slate-500">（導入3ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">2週間前</p>
+                  <p class="text-sm text-body leading-relaxed">投稿しても反応が薄かったのが嘘のよう。保存数が伸び、AIに評価されているのを実感します。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">個人ブランディング中のお客様</span>
+                    <span class="text-xs text-slate-500">（導入5ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">3週間前</p>
+                  <p class="text-sm text-body leading-relaxed">運用の手間が減ったのに、フォロワーは毎日自然と増え続けていて驚いています。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">都内・飲食店店長様</span>
+                    <span class="text-xs text-slate-500">（導入4ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">3週間前</p>
+                  <p class="text-sm text-body leading-relaxed">競合が多いエリアですが、検索上位を獲ることで他社に流れる前に予約を頂けています。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">フリーランス・クリエイター様</span>
+                    <span class="text-xs text-slate-500">（導入半年）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">初期ブーストのおかげで、新作を出すたびに「おすすめ」に載るのが当たり前になりました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">不動産・賃貸担当者様</span>
+                    <span class="text-xs text-slate-500">（導入3ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">地域名＋賃貸のキーワードで独占。広告費をかけずに集客できる最強の武器になりました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">美容サロン経営者様</span>
+                    <span class="text-xs text-slate-500">（リピーター様）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">非常に丁寧でクリーンな運用なので、ペナルティ等の心配もなく安心して任せられます。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">フリーランス・クリエイター様</span>
+                    <span class="text-xs text-slate-500">（導入4ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">1ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">プロフィールアクセス数が激増。営業活動をしなくてもインスタから仕事が舞い込みます。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">ネイルサロン経営者様</span>
+                    <span class="text-xs text-slate-500">（導入3ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約2ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">「渋谷ネイル」で上位。以前より客単価の高いお客様が増えたのが嬉しい誤算です。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">ECサイト運営担当者様</span>
+                    <span class="text-xs text-slate-500">（導入5ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約2ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">バズらせるだけでなく、売上（CVR）に直結する運用のコツまで見えてきました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">個人ブランディング中のお客様</span>
+                    <span class="text-xs text-slate-500">（導入2ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約2ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">フォロワーの伸び悩みから一転、1ヶ月で1,000人増。初動の重要性を痛感しました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">地域店舗経営者様</span>
+                    <span class="text-xs text-slate-500">（導入4ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約2ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">季節ごとのキーワードでしっかり検索上位。SNSでの認知がそのまま現地予約に繋がっています。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">美容サロン経営者様</span>
+                    <span class="text-xs text-slate-500">（導入3ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約3ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">いいね代行での自然なアプローチが好印象。変なアカウントが寄ってくることもありません。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">ECサイト運営担当者様</span>
+                    <span class="text-xs text-slate-500">（導入半年）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約3ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">AIが「価値ある投稿」と判断してくれるので、良質な見込み客にだけリーチできています。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">個人ブランディング中のお客様</span>
+                    <span class="text-xs text-slate-500">（リピーター様）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約3ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">検索画面での露出が増え、ブランドとしての信頼感が一気に高まりました。</p>
+                </article>
+              </div>
+              <div class="voices-carousel-card" role="listitem">
+                <article class="voices-card bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="font-medium text-body">地域店舗経営者様</span>
+                    <span class="text-xs text-slate-500">（導入4ヶ月）</span>
+                    <span class="flex gap-0.5 text-accent ml-auto" aria-hidden="true">★★★★★</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mb-2">約3ヶ月前</p>
+                  <p class="text-sm text-body leading-relaxed">近隣の競合よりも目立つ位置を確保。LINE登録数が先月の倍になりました。</p>
+                </article>
+              </div>
+            </div>
+          </div>
+          <div class="voices-carousel-nav">
+            <button type="button" id="voices-carousel-prev" class="voices-carousel-arrow" aria-label="前のレビュー">‹</button>
+            <div id="voices-carousel-dots" class="voices-carousel-dots" role="tablist" aria-label="レビューの位置"></div>
+            <button type="button" id="voices-carousel-next" class="voices-carousel-arrow" aria-label="次のレビュー">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- よくある質問 -->
+  <section id="faq" class="py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-body mb-12">よくある質問</h2>
+
+      <div class="space-y-4">
+        <details class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <summary class="font-bold text-lg cursor-pointer flex justify-between items-center">
+            本当に1ヶ月で解約できますか？
+            <span class="text-blue-600">+</span>
+          </summary>
+          <p class="mt-4 text-slate-600 leading-relaxed">
+            はい、可能です。長期契約の縛りは一切ございません。「まずは効果を試したい」というお客様のために、1ヶ月単位での更新としております。解約手数料もかかりませんので、安心してスタートいただけます。
+          </p>
+        </details>
+
+        <details class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <summary class="font-bold text-lg cursor-pointer flex justify-between items-center">
+            どんな業種でも運用可能ですか？
+            <span class="text-blue-600">+</span>
+          </summary>
+          <p class="mt-4 text-slate-600 leading-relaxed">
+            はい、対応可能です。美容サロン、飲食店、ECショップ、クリニックなど、幅広い業種で実績があります。Instagramのアルゴリズムは共通ですので、あなたのビジネスに合わせた最適な検索キーワード戦略を設計します。
+          </p>
+        </details>
+
+        <details class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <summary class="font-bold text-lg cursor-pointer flex justify-between items-center">
+            運用開始までに何を準備すればいいですか？
+            <span class="text-blue-600">+</span>
+          </summary>
+          <p class="mt-4 text-slate-600 leading-relaxed">
+            ご利用サービスによりますが、基本的にはお客様アカウント名をご教示いただくだけです。投稿素材や文言の方向性やご希望については、チャットにてご相談いたしますので、開始後の手間は最小限です。
+          </p>
+        </details>
+
+        <details class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <summary class="font-bold text-lg cursor-pointer flex justify-between items-center">
+            どれくらいで効果が出ますか？
+            <span class="text-blue-600">+</span>
+          </summary>
+          <p class="mt-4 text-slate-600 leading-relaxed">
+            アカウントの現状にもよりますが、アルゴリズムの最適化により、運用開始の翌月以降に検索順位の上昇やリーチ数に変化が見られるケースが多いです。継続することで、より安定した集客・フォロワー増加が期待できます。
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最終CTA：無料キーワード診断バナー -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-20">
+    <div class="rounded-xl p-6 sm:p-8 text-white shadow-lg bg-gradient-to-br from-[#001122] to-[#002255] border border-blue-400/20">
+      <p class="text-xs font-bold tracking-widest uppercase text-blue-200 mb-2">4 — JEMIA限定</p>
+      <h2 class="text-2xl sm:text-3xl font-bold mb-3">【JEMIA限定】あなたのアカウントの「露出余地」を無料診断</h2>
+      <p class="text-sm sm:text-base text-blue-100 mb-6 leading-relaxed">「今、どのキーワードを攻めればもっと流入数が増えるか？」「なぜ現在のリーチが伸び悩んでいるのか？」プロがあなたの代わりに分析します。</p>
+      <button type="button" data-inquiry="無料キーワード診断" class="btn-cta-shimmer px-6 py-3 bg-accent text-white text-sm font-bold rounded-lg hover:bg-accent-hover transition shadow relative overflow-hidden">
+        無料で診断を申し込む
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-[#f8fafc] text-[#1e293b] py-12 font-sans">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row md:items-start gap-10 md:gap-8 text-center md:text-left">
+        <!-- 運営元情報（左） -->
+        <div class="md:flex-1 order-1">
+          <p class="font-bold text-lg tracking-tight text-[#1e293b] mb-2">JEMIA</p>
+          <p class="text-sm text-slate-600 leading-relaxed">Instagram運用を、もっと自由に。もっとスマートに。</p>
+          <p class="text-xs text-slate-500 mt-4 md:block hidden">© 2026 株式会社ホットセラー. All rights reserved.</p>
+        </div>
+        <!-- インフォメーション（中央） -->
+        <div class="md:flex-1 order-2">
+          <p class="text-sm font-semibold text-[#1e293b] mb-1">受付時間</p>
+          <p class="text-sm text-slate-600 mb-2">平日 09:00 - 18:00（土日祝日は除く）</p>
+          <p class="text-xs text-slate-500 leading-relaxed">時間外のお問い合わせは次の相談時間に順次返答しております。</p>
+        </div>
+        <!-- ナビゲーション（右） -->
+        <div class="md:flex-1 order-3">
+          <nav class="flex flex-col sm:flex-row md:flex-col gap-3 justify-center md:justify-start" aria-label="フッターナビゲーション">
+            <a href="privacy.html" class="text-sm text-slate-600 hover:text-[#1e293b] underline underline-offset-2 transition">プライバシーポリシー</a>
+          </nav>
+        </div>
+      </div>
+      <!-- コピーライト（モバイルでは4番目に表示） -->
+      <p class="text-xs text-slate-500 text-center mt-8 md:hidden order-4">© 2026 株式会社ホットセラー. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Modal: Contact Form -->
+  <div id="contact-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+    <div class="fixed inset-0 bg-black/50" id="modal-backdrop"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto pointer-events-auto" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+        <div class="p-6 sm:p-8">
+          <h2 id="modal-title" class="text-lg font-semibold text-primary-900">お問い合わせ</h2>
+          <form id="contact-form" class="mt-6 space-y-4 relative" action="#" method="post">
+            <input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0" style="clip: rect(0, 0, 0, 0); clip-path: inset(50%);">
+            <input type="hidden" name="inquiry_type" id="inquiry_type" value="">
+            <div class="mb-4">
+              <label for="name" class="block text-sm font-bold text-body mb-1">お名前 <span class="text-red-500">*</span></label>
+              <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600">
+            </div>
+            <div class="mb-4">
+              <label for="email" class="block text-sm font-bold text-body mb-1">メールアドレス <span class="text-red-500">*</span></label>
+              <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">種別</label>
+              <div class="flex gap-4 mt-1">
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="entity" value="individual" checked class="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500">
+                  <span class="text-sm text-body">個人</span>
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="entity" value="corporate" class="rounded-full border-gray-300 text-primary-600 focus:ring-primary-500">
+                  <span class="text-sm text-body">法人</span>
+                </label>
+              </div>
+            </div>
+            <div id="company-field" class="mb-4 hidden">
+              <label for="company" class="block text-sm font-bold text-body mb-1">会社名 <span class="text-red-500">*</span></label>
+              <input type="text" id="company" name="company" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">業種 <span class="text-red-500">*</span></label>
+              <select name="industry" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600">
+                <option value="">選択してください</option>
+                <option value="美容・サロン">美容・サロン</option>
+                <option value="飲食店">飲食店</option>
+                <option value="ECショップ">ECショップ</option>
+                <option value="パーソナルジム">パーソナルジム</option>
+                <option value="不動産・建築">不動産・建築</option>
+                <option value="スクール・教育">スクール・教育</option>
+                <option value="クリニック・医療">クリニック・医療</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">問い合わせ種別</label>
+              <p id="inquiry-display" class="mt-1 text-sm text-primary-700 font-medium bg-primary-50 px-3 py-2 rounded-lg"></p>
+            </div>
+            <div id="product-interest-block" class="mb-4 hidden">
+              <p class="block text-sm font-bold text-body mb-2">興味のある商品を選択 <span class="text-gray-400 text-xs font-normal">(任意・複数可)</span></p>
+              <div class="border border-gray-300 rounded-md px-3 py-3 space-y-2.5 max-h-56 overflow-y-auto">
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="いいね代行" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>いいね代行</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="おすすめ発見表示" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>おすすめ発見表示</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="アカウント活性化＋発見表示ブースト" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>アカウント活性化＋発見表示ブースト</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="アカウントリスト上位表示" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>アカウントリスト上位表示</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="プレミアム・オーダーメイド" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>プレミアム・オーダーメイド</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="無料キーワード診断" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>無料キーワード診断</span>
+                </label>
+                <label class="flex items-start gap-2.5 cursor-pointer text-sm text-body leading-snug">
+                  <input type="checkbox" name="product_interest[]" value="その他" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0">
+                  <span>その他</span>
+                </label>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-body mb-1">InstagramアカウントID <span class="text-gray-400 text-xs">(任意)</span></label>
+              <input type="text" name="instagram_id" placeholder="@example" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600">
+              <p class="text-[10px] text-slate-500 mt-1">※事前に診断をご希望の場合はご入力ください</p>
+            </div>
+            <div class="mb-4">
+              <label for="inquiry-message" class="block text-sm font-bold text-body mb-1">ご質問・その他 <span class="text-red-500">*</span></label>
+              <textarea id="inquiry-message" name="message" rows="3" required placeholder="ご質問やご要望をご記入ください（必須）" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary-600 focus:border-primary-600 resize-y"></textarea>
+            </div>
+            <div class="pt-2 flex gap-3">
+              <button type="submit" class="flex-1 px-4 py-2.5 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition">
+                送信する
+              </button>
+              <button type="button" id="modal-close" class="px-4 py-2.5 border border-gray-300 text-body text-sm font-medium rounded-lg hover:bg-gray-50 transition">
+                キャンセル
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thanks popup（送信完了） -->
+  <div id="thanks-modal" class="fixed inset-0 z-[60] hidden" aria-hidden="true" role="dialog" aria-labelledby="thanks-title" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-500/40 backdrop-blur-[1px]" id="thanks-backdrop"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div class="relative bg-white border-2 border-[#002255] rounded-xl shadow-xl max-w-md w-full p-8 text-center pointer-events-auto">
+        <h3 id="thanks-title" class="text-xl font-bold text-[#002255] mb-4">Message Sent! ✨</h3>
+        <p class="text-sm text-slate-700 leading-relaxed mb-6">お問い合わせありがとうございます。内容を確認し、担当者よりメールにてご連絡いたします。今しばらくお待ちください。</p>
+        <button type="button" id="thanks-close" class="w-full px-4 py-2.5 rounded-lg text-white text-sm font-semibold bg-[#FF6633] hover:opacity-90 transition shadow-sm">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: 詳細1（戦略の必然性） -->
+  <div id="detail-modal-1" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+    <div class="fixed inset-0 bg-black/50 detail-modal-backdrop"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto pointer-events-auto">
+        <div class="p-6 sm:p-8">
+          <div class="flex justify-between items-start gap-4 mb-4">
+            <h2 class="text-lg font-semibold text-primary-900">なぜ「発見タブ」に載る必要があるのか？</h2>
+            <button type="button" class="detail-modal-close text-gray-400 hover:text-slate-600 p-1 text-xl leading-none" aria-label="閉じる">×</button>
+          </div>
+
+          <div class="text-sm text-slate-600 space-y-5">
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <div class="bg-gray-100 px-4 py-2 font-bold text-body">既存の運用（ホーム中心）</div>
+              <ul class="px-4 py-3 space-y-1 list-disc list-inside">
+                <li>届く範囲：今のフォロワーだけ</li>
+                <li>結果：新規流入がなく、アカウントが徐々に衰退（アクティブユーザーの減少）</li>
+              </ul>
+            </div>
+            <div class="border border-blue-200 rounded-lg overflow-hidden bg-blue-50/50">
+              <div class="bg-blue-100 px-4 py-2 font-bold text-primary-800">JEMIAの運用（発見タブ中心）</div>
+              <ul class="px-4 py-3 space-y-1 list-disc list-inside">
+                <li>届く範囲：全世界の潜在顧客</li>
+                <li>結果：投稿するたびに新規フォロワーが流入し、売上の母数が拡大し続ける</li>
+              </ul>
+            </div>
+            <p class="text-body font-medium leading-relaxed">新規層に見つけられない商品（アカウント）は、SNS時代において選ばれる土俵にすら立っていません。JEMIAは、あなたの投稿を「見つけてもらう」ための最短ルートを提供します。</p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-gray-200">
+            <button type="button" data-inquiry="自社アカウントの露出状況を相談する" class="w-full px-4 py-2.5 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition">自社アカウントの露出状況を相談する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('contact-modal');
+      var backdrop = document.getElementById('modal-backdrop');
+      var closeBtn = document.getElementById('modal-close');
+      var inquiryInput = document.getElementById('inquiry_type');
+      var inquiryDisplay = document.getElementById('inquiry-display');
+      var companyField = document.getElementById('company-field');
+      var companyInput = document.getElementById('company');
+      var entityRadios = document.querySelectorAll('input[name="entity"]');
+      var form = document.getElementById('contact-form');
+      var productInterestBlock = document.getElementById('product-interest-block');
+      var thanksModal = document.getElementById('thanks-modal');
+      var thanksBackdrop = document.getElementById('thanks-backdrop');
+      var thanksClose = document.getElementById('thanks-close');
+      var emailInput = document.getElementById('email');
+      var emailFormatRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (emailInput) {
+        emailInput.addEventListener('input', function () {
+          emailInput.setCustomValidity('');
+        });
+      }
+
+      function openThanksModal() {
+        if (!thanksModal) return;
+        thanksModal.classList.remove('hidden');
+        thanksModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (thanksClose) thanksClose.focus();
+      }
+
+      function closeThanksModal() {
+        if (!thanksModal) return;
+        thanksModal.classList.add('hidden');
+        thanksModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      if (thanksClose) thanksClose.addEventListener('click', closeThanksModal);
+      if (thanksBackdrop) thanksBackdrop.addEventListener('click', closeThanksModal);
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && thanksModal && !thanksModal.classList.contains('hidden')) {
+          closeThanksModal();
+        }
+      });
+
+      function shouldShowProductInterest(label) {
+        return label === 'プレミアム・オーダーメイド（内容セレクト・料金交渉）' || label === '無料キーワード診断';
+      }
+
+      function setProductInterestVisible(show) {
+        if (!productInterestBlock) return;
+        productInterestBlock.classList.toggle('hidden', !show);
+        form.querySelectorAll('input[name="product_interest[]"]').forEach(function (inp) {
+          inp.disabled = !show;
+          if (!show) inp.checked = false;
+        });
+      }
+
+      function updateCompanyRequired() {
+        var isCorporate = document.querySelector('input[name="entity"]:checked').value === 'corporate';
+        companyField.classList.toggle('hidden', !isCorporate);
+        companyInput.required = isCorporate;
+        if (!isCorporate) companyInput.value = '';
+      }
+
+      function openModal(inquiryLabel) {
+        inquiryInput.value = inquiryLabel;
+        inquiryDisplay.textContent = inquiryLabel;
+        setProductInterestVisible(shouldShowProductInterest(inquiryLabel));
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateCompanyRequired();
+      }
+
+      function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('[data-inquiry]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          var detailModal = this.closest('[id^="detail-modal-"]');
+          if (detailModal) {
+            detailModal.classList.add('hidden');
+            document.body.style.overflow = '';
+          }
+          openModal(this.getAttribute('data-inquiry'));
+        });
+      });
+
+      function closeDetailModal(detailModalEl) {
+        if (detailModalEl) {
+          detailModalEl.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
+      }
+
+      document.querySelectorAll('[data-detail-modal]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = this.getAttribute('data-detail-modal');
+          var detailModal = document.getElementById(id);
+          if (detailModal) {
+            detailModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+
+      document.querySelectorAll('.detail-modal-backdrop').forEach(function (backdrop) {
+        backdrop.addEventListener('click', function () {
+          var detailModal = this.closest('[id^="detail-modal-"]');
+          closeDetailModal(detailModal);
+        });
+      });
+
+      document.querySelectorAll('.detail-modal-close').forEach(function (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          var detailModal = this.closest('[id^="detail-modal-"]');
+          closeDetailModal(detailModal);
+        });
+      });
+
+      backdrop.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
+
+      entityRadios.forEach(function (radio) {
+        radio.addEventListener('change', updateCompanyRequired);
+      });
+
+      function buildContactPayload(formEl) {
+        var fd = new FormData(formEl);
+        var interests = [];
+        formEl.querySelectorAll('input[name="product_interest[]"]:checked').forEach(function (cb) {
+          interests.push(cb.value);
+        });
+        return {
+          website: fd.get('website') || '',
+          name: fd.get('name') || '',
+          email: fd.get('email') || '',
+          entity: fd.get('entity') || '',
+          company: fd.get('company') || '',
+          industry: fd.get('industry') || '',
+          inquiry_type: fd.get('inquiry_type') || '',
+          product_interest: interests,
+          instagram_id: fd.get('instagram_id') || '',
+          message: fd.get('message') || ''
+        };
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        var messageEl = document.getElementById('inquiry-message');
+        if (!messageEl.value.trim()) {
+          messageEl.setCustomValidity('ご質問・その他をご記入ください。');
+          messageEl.reportValidity();
+          messageEl.setCustomValidity('');
+          return;
+        }
+        if (emailInput && !emailFormatRe.test(emailInput.value.trim())) {
+          emailInput.setCustomValidity('正しいメールアドレスの形式でご入力ください。');
+          emailInput.reportValidity();
+          emailInput.setCustomValidity('');
+          return;
+        }
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
+        if (submitBtn.disabled) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '送信中...';
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify(buildContactPayload(form))
+        })
+          .then(function (res) {
+            return res.text().then(function (text) {
+              var data;
+              try {
+                data = JSON.parse(text);
+              } catch (err) {
+                throw new Error();
+              }
+              return { data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data && result.data.ok) {
+              closeModal();
+              form.reset();
+              setProductInterestVisible(shouldShowProductInterest(inquiryInput.value));
+              updateCompanyRequired();
+              openThanksModal();
+            } else {
+              var msg = (result.data && result.data.error) ? result.data.error : '送信に失敗しました。しばらくしてから再度お試しください。';
+              alert(msg);
+            }
+          })
+          .catch(function () {
+            alert('送信に失敗しました。しばらくしてから再度お試しください。');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          });
+      });
+
+      (function initVoicesCarousel() {
+        var outer = document.getElementById('voices-carousel');
+        var track = document.getElementById('voices-carousel-track');
+        var prevBtn = document.getElementById('voices-carousel-prev');
+        var nextBtn = document.getElementById('voices-carousel-next');
+        var dotsEl = document.getElementById('voices-carousel-dots');
+        if (!outer || !track || !prevBtn || !nextBtn || !dotsEl) return;
+        var cards = outer.querySelectorAll('.voices-carousel-card');
+        var total = cards.length;
+        if (total === 0) return;
+        var gap = 16;
+        var currentIndex = 0;
+        var autoTimer = null;
+        var autoDelay = 5000;
+
+        function getVisibleCount() { return window.matchMedia('(min-width: 1024px)').matches ? 3 : 1; }
+        function getMaxIndex() { return Math.max(0, total - getVisibleCount()); }
+
+        function getStepPx() {
+          var visible = getVisibleCount();
+          var cardWidth = (outer.offsetWidth - gap * (visible - 1)) / visible;
+          return cardWidth + gap;
+        }
+
+        function applyTransform() {
+          var step = getStepPx();
+          track.style.transform = 'translateX(-' + (currentIndex * step) + 'px)';
+        }
+
+        function updateDots() {
+          dotsEl.innerHTML = '';
+          for (var i = 0; i < total; i++) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'voices-carousel-dot' + (i === currentIndex ? ' is-active' : '');
+            btn.setAttribute('aria-label', 'レビュー ' + (i + 1) + ' へ');
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+            (function (idx) {
+              btn.addEventListener('click', function () {
+                goTo(idx);
+                pauseAuto();
+              });
+            })(i);
+            dotsEl.appendChild(btn);
+          }
+        }
+
+        function goTo(idx) {
+          var maxIdx = getMaxIndex();
+          currentIndex = idx < 0 ? 0 : idx > maxIdx ? maxIdx : idx;
+          applyTransform();
+          prevBtn.disabled = currentIndex <= 0;
+          nextBtn.disabled = currentIndex >= getMaxIndex();
+          var dots = dotsEl.querySelectorAll('.voices-carousel-dot');
+          dots.forEach(function (d, i) {
+            d.classList.toggle('is-active', i === currentIndex);
+            d.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+          });
+        }
+
+        function next() { goTo(currentIndex + 1); }
+        function prev() { goTo(currentIndex - 1); }
+
+        function startAuto() {
+          stopAuto();
+          autoTimer = setInterval(function () {
+            var maxIdx = getMaxIndex();
+            if (currentIndex >= maxIdx) goTo(0);
+            else next();
+          }, autoDelay);
+        }
+        function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+        function pauseAuto() { stopAuto(); setTimeout(startAuto, autoDelay * 2); }
+
+        prevBtn.addEventListener('click', function () { prev(); pauseAuto(); });
+        nextBtn.addEventListener('click', function () { next(); pauseAuto(); });
+
+        var touchStartX = 0;
+        outer.addEventListener('touchstart', function (e) {
+          touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+        outer.addEventListener('touchend', function (e) {
+          var touchEndX = e.changedTouches[0].clientX;
+          var diff = touchStartX - touchEndX;
+          if (Math.abs(diff) > 40) {
+            if (diff > 0) next();
+            else prev();
+            pauseAuto();
+          }
+        }, { passive: true });
+
+        window.addEventListener('resize', function () {
+          applyTransform();
+          updateDots();
+          prevBtn.disabled = currentIndex <= 0;
+          nextBtn.disabled = currentIndex >= getMaxIndex();
+        });
+
+        applyTransform();
+        updateDots();
+        prevBtn.disabled = true;
+        nextBtn.disabled = getMaxIndex() <= 0;
+        startAuto();
+      })();
+
+      var ratingBlock = document.getElementById('voices-rating-block');
+      if (ratingBlock && typeof IntersectionObserver !== 'undefined') {
+        var ratingObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              ratingBlock.classList.add('rating-bars-visible');
+              ratingObserver.unobserve(ratingBlock);
+            }
+          });
+        }, { rootMargin: '0px', threshold: 0.2 });
+        ratingObserver.observe(ratingBlock);
+      } else if (ratingBlock) {
+        ratingBlock.classList.add('rating-bars-visible');
+      }
+    })();
+  </script>
+</body>
+</html>

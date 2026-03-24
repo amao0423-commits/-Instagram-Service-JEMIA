@@ -1,0 +1,55 @@
+【JEMIA LP 本番アップロード手順（できるとこまで）】
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■ A. Vercel で公開する場合（推奨・現在のフォームはこちら向け）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  アップロード／連携するもの
+  - リポジトリ一式（index.html / insta-strategy-guide.html / privacy.html / api / package.json など）
+  - Vercel の「Environment Variables」に次を設定
+      RESEND_API_KEY   … Resend の API キー（https://resend.com で取得）
+      ADMIN_EMAIL      … 管理者通知の宛先（例: amao0423@hotseller.co.kr）
+      RESEND_FROM      … 送信元（例: JEMIA <onboarding@resend.dev> または自社ドメイン認証後のアドレス）
+
+  ローカル確認
+  - プロジェクトフォルダで npm install
+  - npx vercel dev を実行し、表示された URL でフォーム送信をテスト
+
+  本番のメールについて
+  - Resend の「テスト用」送信元では、宛先に制限がある場合があります。本番は Resend で自社ドメインを追加し、RESEND_FROM をそのドメインのメールにしてください。
+
+  フォームの送信先
+  - フロントは /api/contact（api/contact.js）に JSON で POST します。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■ B. PHP レンタルサーバーだけで公開する場合（従来）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  アップロードするファイルの例
+  - index.html / insta-strategy-guide.html / privacy.html
+  - mail.php
+  - mail-config.sample.php（参考用）
+  - 画像・CSS 等があるフォルダはそのまま
+  - .htaccess（Apache の場合）
+
+  サーバー条件
+  - PHP が動くこと（静的ホストのみでは mail.php は使えません）
+  - 拡張 mbstring が有効なことが望ましいです
+
+  ※ Vercel 用にフォームを変更したため、PHP だけで使う場合はフォームの action を mail.php に戻し、送信を FormData（multipart）に戻す必要があります。
+
+  メール設定（本番で差し替える場合）
+  1. mail-config.sample.php をコピーし、同じフォルダに mail-config.php という名前で保存
+  2. mail-config.php 内の admin_to / from_email を、利用中のドメイン・メールアカウントに合わせて編集
+  3. （任意）rate_limit_max を 0 にすると送信回数制限をオフにできます
+  4. ドメインの SPF（可能なら DKIM）をレンタルサーバーの案内に従い設定
+
+  mail-config.php が無い場合
+  - mail.php に書かれた既定の宛先・件名で動作します
+
+  トラブル時
+  - 送信エラーが続く場合は、ホスティングの「PHP メール送信」「SMTP 必須かどうか」を確認してください
+
+■ 動作確認（共通）
+  1. ブラウザで本番 URL のフォームを開く
+  2. テスト送信し、管理者メールと入力メールの両方に届くか確認
