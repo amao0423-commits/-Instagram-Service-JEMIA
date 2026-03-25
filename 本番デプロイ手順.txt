@@ -10,6 +10,14 @@
       RESEND_API_KEY   … Resend の API キー（https://resend.com で取得）
       ADMIN_EMAIL      … 管理者通知の宛先（例: amao0423@hotseller.co.kr）
       RESEND_FROM      … 送信元（例: JEMIA <onboarding@resend.dev> または自社ドメイン認証後のアドレス）
+      SUPABASE_URL     … Supabase プロジェクトの URL（ダッシュボード → Project Settings → API）
+      SUPABASE_SERVICE_ROLE_KEY … Supabase の service_role キー（サーバー専用・公開しない）
+      ADMIN_DASHBOARD_PASSWORD  … /admin ログイン用パスワード
+      ADMIN_SESSION_SECRET      … ランダムな長い文字列（セッション署名用）
+
+  - Supabase で sql/supabase_contacts.sql を SQL Editor に貼り付けて実行し、contacts テーブルを作成してください。
+
+  - 管理画面 URL: 本番ドメインの /admin（例: https://（プロジェクト）.vercel.app/admin）
 
   ローカル確認
   - プロジェクトフォルダで npm install
@@ -52,4 +60,4 @@
 
 ■ 動作確認（共通）
   1. ブラウザで本番 URL のフォームを開く
-  2. テスト送信し、管理者メールと入力メールの両方に届くか確認
+  2. テスト送信し、管理者メールに届くか確認

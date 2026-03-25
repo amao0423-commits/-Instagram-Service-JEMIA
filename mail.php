@@ -22,7 +22,6 @@ $defaults = [
     'from_email' => 'amao0423@hotseller.co.kr',
     'from_name' => 'JEMIA',
     'admin_subject' => '【JEMIA】新規お問い合わせ/診断申し込みがありました',
-    'user_subject' => '【JEMIA】お問い合わせありがとうございます',
     'rate_limit_max' => 6,
     'rate_limit_window_seconds' => 600,
 ];
@@ -101,7 +100,6 @@ $adminTo = (string) $config['admin_to'];
 $fromAddr = (string) $config['from_email'];
 $fromName = (string) $config['from_name'];
 $adminSubject = (string) $config['admin_subject'];
-$userSubject = (string) $config['user_subject'];
 $fromHeader = $fromName . ' <' . $fromAddr . '>';
 
 if (function_exists('mb_language')) {
@@ -133,19 +131,9 @@ if ($productLines !== []) {
 $adminBody .= "Instagram ID: {$instagram_id}\n";
 $adminBody .= "\n--- ご質問・その他 ---\n{$message}\n";
 
-$userBody = "{$name} 様\n\n";
-$userBody .= "この度は、JEMIAへお問い合わせいただき、誠にありがとうございます。\n";
-$userBody .= "仮のお申し込み・お問い合わせを受け付けました。\n";
-$userBody .= "内容を確認のうえ、担当者より1〜2営業日以内にメールにてご連絡いたします。\n";
-$userBody .= "今しばらくお待ちくださいますようお願い申し上げます。\n\n";
-$userBody .= "━━━━━━━━━━━━━━━━\n";
-$userBody .= "株式会社ホットセラー JEMIA\n";
-
 $commonHeaders = 'From: ' . $fromHeader . "\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit";
 
 $adminHeaders = $commonHeaders . "\r\nReply-To: {$email}";
-
-$userHeaders = $commonHeaders;
 
 $send = function (string $to, string $subj, string $body, string $headers) use ($encSubj): bool {
     $encoded = $encSubj($subj);
@@ -156,12 +144,6 @@ $send = function (string $to, string $subj, string $body, string $headers) use (
 };
 
 if (!$send($adminTo, $adminSubject, $adminBody, $adminHeaders)) {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => '送信に失敗しました。しばらくしてから再度お試しください。'], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-if (!$send($email, $userSubject, $userBody, $userHeaders)) {
     http_response_code(500);
     echo json_encode(['ok' => false, 'error' => '送信に失敗しました。しばらくしてから再度お試しください。'], JSON_UNESCAPED_UNICODE);
     exit;

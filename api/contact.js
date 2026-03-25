@@ -1,5 +1,6 @@
 import { buffer } from 'node:stream/consumers';
 import { Resend } from 'resend';
+import { getSupabaseAdmin } from '../lib/supabase-server.js';
 
 function sanitizeLine(s) {
   return String(s ?? '')
@@ -51,6 +52,11 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: 'サーバー設定が完了していません。' });
   }
 
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return res.status(500).json({ ok: false, error: 'サーバー設定が完了していません。' });
+  }
+
   const name = sanitizeLine(body.name);
   const email = String(body.email ?? '').trim();
   const entity = sanitizeLine(body.entity);
@@ -78,11 +84,36 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'メールアドレスの形式が正しくありません。' });
   }
 
+  const typeLabel = entity === 'corporate' ? '法人' : '個人';
+  const extras = [];
+  if (inquiry_type) extras.push(`問い合わせ種別: ${inquiry_type}`);
+  if (entity === 'corporate' && company) extras.push(`会社名: ${company}`);
+  if (productLines.length) extras.push(`興味のある商品: ${productLines.join('、')}`);
+  if (instagram_id) extras.push(`Instagram ID: ${instagram_id}`);
+  let fullMessage = message;
+  if (extras.length) {
+    fullMessage = `${message}\n\n—— フォーム情報 ——\n${extras.join('\n')}`;
+  }
+
+  const { error: insertErr } = await supabase.from('contacts').insert({
+    name,
+    email,
+    type: typeLabel,
+    industry,
+    message: fullMessage,
+    status: '未対応',
+    admin_memo: '',
+  });
+
+  if (insertErr) {
+    console.error('[contact] supabase insert', insertErr);
+    return res.status(500).json({ ok: false, error: '送信に失敗しました。しばらくしてから再度お試しください。' });
+  }
+
   const adminTo = process.env.ADMIN_EMAIL || 'amao0423@hotseller.co.kr';
   const fromRaw = process.env.RESEND_FROM || 'JEMIA <onboarding@resend.dev>';
 
   const adminSubject = '【JEMIA】新規お問い合わせ/診断申し込みがありました';
-  const userSubject = '【JEMIA】お問い合わせありがとうございます';
 
   let adminBody = 'お問い合わせフォームより送信がありました。\n\n';
   adminBody += `お名前: ${name}\n`;
@@ -99,14 +130,6 @@ export default async function handler(req, res) {
   adminBody += `Instagram ID: ${instagram_id}\n`;
   adminBody += `\n--- ご質問・その他 ---\n${message}\n`;
 
-  let userBody = `${name} 様\n\n`;
-  userBody += 'この度は、JEMIAへお問い合わせいただき、誠にありがとうございます。\n';
-  userBody += '仮のお申し込み・お問い合わせを受け付けました。\n';
-  userBody += '内容を確認のうえ、担当者より1〜2営業日以内にメールにてご連絡いたします。\n';
-  userBody += '今しばらくお待ちくださいますようお願い申し上げます。\n\n';
-  userBody += '━━━━━━━━━━━━━━━━\n';
-  userBody += '株式会社ホットセラー JEMIA\n';
-
   const resend = new Resend(apiKey);
 
   const adminResult = await resend.emails.send({
@@ -119,18 +142,6 @@ export default async function handler(req, res) {
 
   if (adminResult.error) {
     console.error('[contact] admin mail', adminResult.error);
-    return res.status(500).json({ ok: false, error: '送信に失敗しました。しばらくしてから再度お試しください。' });
-  }
-
-  const userResult = await resend.emails.send({
-    from: fromRaw,
-    to: email,
-    subject: userSubject,
-    text: userBody,
-  });
-
-  if (userResult.error) {
-    console.error('[contact] user mail', userResult.error);
     return res.status(500).json({ ok: false, error: '送信に失敗しました。しばらくしてから再度お試しください。' });
   }
 

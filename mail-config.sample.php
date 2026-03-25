@@ -15,9 +15,8 @@ return [
     'from_email' => 'amao0423@hotseller.co.kr',
     'from_name' => 'JEMIA',
 
-    // 件名
+    // 件名（管理者通知）
     'admin_subject' => '【JEMIA】新規お問い合わせ/診断申し込みがありました',
-    'user_subject' => '【JEMIA】お問い合わせありがとうございます',
 
     // 10分あたりの同一セッションからの最大送信回数（スパム緩和。0 で無効）
     'rate_limit_max' => 6,
